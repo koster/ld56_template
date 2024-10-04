@@ -4,10 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class Main : MonoBehaviour
 {
-    void Awake()
+    void Start()
     {
         G.main = this;
-        CMS.Init();
+        G.OnGameReady?.Invoke();
     }
 
     void Update()
@@ -17,8 +17,8 @@ public class Main : MonoBehaviour
             CMS.Unload();
             SceneManager.LoadScene(0);
         }
-        
-        
+
+
         if (Input.GetMouseButtonDown(0))
         {
             G.audio.Play<SFX_Click>();

@@ -30,6 +30,9 @@ public class AudioSystem : MonoBehaviour
     void Awake()
     {
         G.audio = this;
+
+        musicSource = gameObject.AddComponent<AudioSource>();
+        ambientSource = gameObject.AddComponent<AudioSource>();
     }
 
     public void Play<T>() where T : CMSEntity
