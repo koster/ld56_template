@@ -1,12 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public static class GameSettings
-{
-    public static bool SKIP_INTRO = false;
-    public static string MAIN_SCENE = "ldgame/main";
-}
-
 public static class G
 {
     public static AudioSystem audio;

@@ -9,7 +9,7 @@ public class WebGLBuilder
     [MenuItem("Build/Build WebGL")]
     public static void Build()
     {
-        string[] scenes = { "Assets/ldgame/main.unity" }; // Определение сцен
+        string[] scenes = { "Assets/ldgame/intro.unity", "Assets/ldgame/main.unity" }; // Определение сцен
         UpdateBuildInfo(); // Обновляем метку времени и номер билда
         BuildPipeline.BuildPlayer(scenes, "webgl_build", BuildTarget.WebGL, BuildOptions.None);
     }
