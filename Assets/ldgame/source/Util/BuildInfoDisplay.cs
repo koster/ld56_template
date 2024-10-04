@@ -23,7 +23,7 @@ public class BuildInfoDisplay : MonoBehaviour
         rectTransform.anchoredPosition = new Vector2(-10, -10); // Немного отступаем от края
 
         // Настраиваем визуальные параметры текста
-        buildInfoText.fontSize = 24;
+        buildInfoText.fontSize = 12;
         buildInfoText.alignment = TextAlignmentOptions.TopRight;
     }
 }
