@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Common;
 using UnityEngine;
@@ -16,7 +17,10 @@ public class AudioSystem : MonoBehaviour
     private AudioSource ambientSource;
     [SerializeField]
     private AudioSource musicSource;
+
     private Dictionary<string, float> lastPlayTime = new Dictionary<string, float>();
+    private List<AudioSource> audioSourcePool = new List<AudioSource>();
+    private int initialPoolSize = 10;
 
     // Audio settings
     public bool MuteSFX { get; set; }
@@ -33,6 +37,14 @@ public class AudioSystem : MonoBehaviour
 
         musicSource = gameObject.AddComponent<AudioSource>();
         ambientSource = gameObject.AddComponent<AudioSource>();
+
+        // Initialize the audio source pool with a predefined size
+        for (int i = 0; i < initialPoolSize; i++)
+        {
+            var audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+            audioSourcePool.Add(audioSource);
+        }
     }
 
     public void Play<T>() where T : CMSEntity
@@ -57,10 +69,42 @@ public class AudioSystem : MonoBehaviour
             if (sfx.Is<SFXArray>(out var sfxarr))
             {
                 var clip = sfxarr.files.GetRandom(ignoreEmpty: true);
-                AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position + Vector3.forward, SFXVolume * sfxarr.volume);
-                lastPlayTime[sfx.id] = Time.time;
+                var audioSource = GetAvailableAudioSource();
+
+                if (audioSource != null)
+                {
+                    audioSource.clip = clip;
+                    audioSource.volume = SFXVolume * sfxarr.volume;
+                    audioSource.Play();
+                    lastPlayTime[sfx.id] = Time.time;
+                    StartCoroutine(ReturnAudioSourceToPool(audioSource, clip.length));
+                }
             }
         }
+    }
+
+    private AudioSource GetAvailableAudioSource()
+    {
+        foreach (var audioSource in audioSourcePool)
+        {
+            if (!audioSource.isPlaying)
+            {
+                return audioSource;
+            }
+        }
+
+        // If no available AudioSource, create a new one and add it to the pool
+        var newAudioSource = gameObject.AddComponent<AudioSource>();
+        newAudioSource.playOnAwake = false;
+        audioSourcePool.Add(newAudioSource);
+        return newAudioSource;
+    }
+
+    private IEnumerator ReturnAudioSourceToPool(AudioSource audioSource, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        audioSource.Stop();
+        audioSource.clip = null; // Clear the clip after playing
     }
 
     private bool CanPlaySFX(string sfxId)

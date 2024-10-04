@@ -7,6 +7,9 @@ public class Main : MonoBehaviour
     void Start()
     {
         G.main = this;
+        CMS.Init();
+        
+        
         G.OnGameReady?.Invoke();
     }
 
@@ -14,7 +17,11 @@ public class Main : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            CMS.Unload();
+            SceneManager.LoadScene(GameSettings.MAIN_SCENE);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.I))
+        {
             SceneManager.LoadScene(0);
         }
 
