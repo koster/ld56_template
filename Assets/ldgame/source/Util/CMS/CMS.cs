@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Common;
+using Unity.VisualScripting;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -50,6 +51,12 @@ public static class CMS
                 allSearch.Add(a as T);
 
         return allSearch;
+    }
+
+    public static void Unload()
+    {
+        isInit = false;
+        all = new CMSTable<CMSEntity>();
     }
 }
 

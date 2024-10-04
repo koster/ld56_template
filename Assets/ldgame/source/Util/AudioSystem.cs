@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Common;
 using UnityEngine;
@@ -25,6 +26,11 @@ public class AudioSystem : MonoBehaviour
     public float SFXVolume { get; set; } = 1.0f;
     public float AmbientVolume { get; set; } = 1.0f;
     public float MusicVolume { get; set; } = 1.0f;
+
+    void Awake()
+    {
+        G.audio = this;
+    }
 
     public void Play<T>() where T : CMSEntity
     {

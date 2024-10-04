@@ -2,6 +2,7 @@ using UnityEngine;
 
 public static class G
 {
+    public static AudioSystem audio;
     public static Main main;
     public static UI ui;
 
