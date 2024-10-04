@@ -6,6 +6,6 @@ public class WebGLBuilder
     {
         // 1
         string[] scenes = { "Assets/ldgame/main.unity" }; // Define your scenes here
-        BuildPipeline.BuildPlayer(scenes, "path_to_output_directory", BuildTarget.WebGL, BuildOptions.None);
+        BuildPipeline.BuildPlayer(scenes, "webgl_build", BuildTarget.WebGL, BuildOptions.None);
     }
 }
