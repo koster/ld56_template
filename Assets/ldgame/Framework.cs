@@ -7,7 +7,7 @@ public static class G
 
     public static bool IsPaused;
 }
-syntax error
+
 public class ManagedBehaviour : MonoBehaviour
 {
     void Update()
