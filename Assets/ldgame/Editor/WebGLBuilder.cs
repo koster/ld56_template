@@ -1,5 +1,6 @@
 using System.IO;
 using UnityEditor;
+using UnityEditor.Build.Profile;
 
 public class WebGLBuilder
 {
@@ -9,8 +10,19 @@ public class WebGLBuilder
     [MenuItem("Build/Build WebGL")]
     public static void Build()
     {
-        string[] scenes = { "Assets/ldgame/intro.unity", "Assets/ldgame/main.unity" }; // Определение сцен
-        UpdateBuildInfo(); // Обновляем метку времени и номер билда
+        UpdateBuildInfo();
+
+        string[] scenes = {  "Assets/ldgame/title_screen.unity", "Assets/ldgame/main.unity" };
+
+        PlayerSettings.defaultWebScreenWidth = 1340;
+        PlayerSettings.defaultWebScreenHeight = 710;
+
+        BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
+        buildPlayerOptions.scenes = scenes;
+        buildPlayerOptions.locationPathName = "webgl_build";
+        buildPlayerOptions.target = BuildTarget.WebGL;
+        buildPlayerOptions.options = BuildOptions.None;
+        
         BuildPipeline.BuildPlayer(scenes, "webgl_build", BuildTarget.WebGL, BuildOptions.None);
     }
 

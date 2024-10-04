@@ -9,15 +9,18 @@ public class ServicedMain : MonoBehaviour
     {
         if (!isInitialized)
         {
-            GameObject autoSaveObject = new GameObject("GameMain");
-            autoSaveObject.AddComponent<ServicedMain>();
-            DontDestroyOnLoad(autoSaveObject);
+            GameObject servicedMain = new GameObject("GameMain");
+            servicedMain.AddComponent<ServicedMain>();
+            DontDestroyOnLoad(servicedMain);
             isInitialized = true;
         }
     }
 
     void Awake()
     {
+        Debug.Log("================");
+        Debug.Log("entrypoint hit");
+        
         // game entrypoint
 
         gameObject.AddComponent<Savesystem>();
