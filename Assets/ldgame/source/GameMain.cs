@@ -25,6 +25,8 @@ public class ServicedMain : MonoBehaviour
 
         gameObject.AddComponent<Savesystem>();
         gameObject.AddComponent<AudioSystem>();
+        G.camera = gameObject.AddComponent<CameraHandle>();
+        G.feel = gameObject.AddComponent<Feel>();
         
         CMS.Init();
 

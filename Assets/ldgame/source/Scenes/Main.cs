@@ -28,7 +28,7 @@ public class Main : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            G.audio.Play<SFX_Click>();
+            G.feel.UIPunchSoft();
         }
     }
 }

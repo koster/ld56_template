@@ -7,6 +7,8 @@ public static class G
     public static Main main;
     public static UI ui;
     public static Savefile save;
+    public static CameraHandle camera;
+    public static Feel feel;
 
     public static bool IsPaused;
 
