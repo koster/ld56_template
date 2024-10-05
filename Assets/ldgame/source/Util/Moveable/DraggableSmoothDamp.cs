@@ -4,15 +4,16 @@ using UnityEngine.EventSystems;
 public class DraggableSmoothDamp : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
 {
     public MoveableBase moveable;
+    public bool isDragging = false; 
 
     private Camera mainCamera;
-    private bool isDragging = false; 
 
     Vector2 origin;
     Vector3 offset;
 
     private void Start()
     {
+        isDragging = false;
         mainCamera = Camera.main; 
         moveable.targetPosition = transform.position; 
     }

@@ -33,8 +33,7 @@ public class Main : MonoBehaviour
             SceneManager.LoadScene(0);
         }
 
-
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.D))
         {
             AddDice();
             G.feel.UIPunchSoft();
