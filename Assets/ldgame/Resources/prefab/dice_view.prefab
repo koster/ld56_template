@@ -631,6 +631,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cec92f1669b42f79f3d94759e79bd5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 7161881389257524145}
   value: {fileID: 399647933643532105}
   moveable: {fileID: -2766719729112121768}
   draggable: {fileID: 0}

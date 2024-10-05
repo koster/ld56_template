@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,7 +16,7 @@ public class DiceZone : MonoBehaviour
             toClaim.zone.Release(toClaim);
 
         toClaim.zone = this;
-        objects.Add(toClaim);
+        objects.Insert(0, toClaim);
     }
 
     public void Release(InteractiveObject toClaim)
@@ -58,5 +59,13 @@ public class DiceZone : MonoBehaviour
         Gizmos.color = new Color(0.5f, 0, 0, 0.25f);
         Gizmos.DrawCube(transform.position, new Vector3(1, 1, 1));
         Gizmos.DrawWireCube(transform.position, new Vector3(1, 1, 1));
+    }
+
+    public InteractiveObject LastDice()
+    {
+        if (objects.Count == 0)
+            return null;
+
+        return objects.Last();
     }
 }

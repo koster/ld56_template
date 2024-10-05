@@ -1,17 +1,21 @@
 using System;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ObjectState
+public class DiceState
 {
+    public CMSEntity model;
     public int rollValue;
     public InteractiveObject view;
 }
 
 public class InteractiveObject : MonoBehaviour, IPointerClickHandler
 {
-    public ObjectState state;
+    public SpriteRenderer spriteRenderer;
+    
+    public DiceState state;
 
     public TMP_Text value;
     
@@ -26,9 +30,12 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler
         draggable = GetComponent<DraggableSmoothDamp>();
     }
 
-    public void SetState(ObjectState diceState)
+    public void SetState(DiceState diceState)
     {
         state = diceState;
+
+        if (state.model.Is<TagTint>(out var tint))
+            spriteRenderer.color = tint.color;
     }
     
     public void SetValue(int val)
@@ -43,5 +50,10 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler
         {
             zone.OnClickDice?.Invoke(this);
         }
+    }
+
+    public void Punch()
+    {
+        transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0.2f), 0.2f);
     }
 }
