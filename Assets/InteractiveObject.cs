@@ -34,7 +34,8 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler
     public void SetState(DiceState diceState)
     {
         state = diceState;
-
+        state.view = this;
+        
         if (state.model.Is<TagTint>(out var tint))
             spriteRenderer.color = tint.color;
     }
@@ -61,5 +62,11 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler
     public void Punch()
     {
         transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0.2f), 0.2f);
+    }
+
+    public void Leave()
+    {
+        if (zone != null)
+            zone.Release(this);
     }
 }

@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -14,6 +16,9 @@ public class Main : MonoBehaviour
 
     public UnityAction<InteractiveObject> OnReleaseDrag;
 
+    public List<ChallengeContainer> challengesActive = new List<ChallengeContainer>();
+    public List<Transform> challengeSlots = new List<Transform>();
+
     void Awake()
     {
         interactor = new Interactor();
@@ -27,6 +32,31 @@ public class Main : MonoBehaviour
         CMS.Init();
 
         G.OnGameReady?.Invoke();
+
+        LoadLevel<Level1>();
+    }
+
+    public void LoadLevel<T>() where T : CMSEntity
+    {
+        var entity = CMS.Get<T>();
+        var level = entity.Get<TagListChallenges>().all;
+        foreach (var challenge in level)
+        {
+            var challengeObject = CMS.Get<CMSEntity>(challenge);
+            AddChallenge(challengeObject);
+        }
+    }
+
+    public void AddChallenge(CMSEntity challengeObject)
+    {
+        if (challengeObject.Is<TagPrefab>(out var pf))
+        {
+            var challenge = Instantiate(pf.prefab);
+            var challengeContainer = challenge.GetComponent<ChallengeContainer>();
+            challengeContainer.Load(challengeObject);
+            challenge.transform.position = challengeSlots[challengesActive.Count].position;
+            challengesActive.Add(challengeContainer);
+        }
     }
 
     public void TryPlayDice(InteractiveObject dice)
@@ -58,9 +88,10 @@ public class Main : MonoBehaviour
 
     public void AddDice(Type t)
     {
-        var basicDice = CMS.Get<CMSEntity>(Entity.Id(t));
+        var basicDice = CMS.Get<CMSEntity>(E.Id(t));
         var state = new DiceState();
         state.model = basicDice;
+        
         var instance = Instantiate(basicDice.Get<TagPrefab>().prefab);
         instance.SetState(state);
         hand.Claim(instance);
@@ -103,5 +134,32 @@ public class Main : MonoBehaviour
     {
         OnReleaseDrag?.Invoke(G.drag_dice);
         G.drag_dice = null;
+    }
+
+    public IEnumerator KillDice(DiceState dice)
+    {
+        dice.view.transform.DOScale(0f, 0.25f);
+        yield return new WaitForSeconds(0.25f);
+        dice.view.Leave();
+        Destroy(dice.view.gameObject);
+    }
+
+    public IEnumerator CheckForWin()
+    {
+        foreach (var container in challengesActive)
+        {
+            if (!container.IsComplete())
+            {
+                yield break;
+            }
+        }
+
+        yield return WinSequence();
+    }
+
+    IEnumerator WinSequence()
+    {
+        G.ui.win.SetActive(true);
+        yield break;
     }
 }

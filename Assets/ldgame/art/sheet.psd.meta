@@ -234,7 +234,7 @@ TextureImporter:
         width: 196
         height: 196
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -243,6 +243,50 @@ TextureImporter:
       bones: []
       spriteID: 340880233b7b45846bbdd5642671215e
       internalID: -1302611160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rock
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 1495
+        width: 272
+        height: 163
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea7e15334343bb6468875edf35e816af
+      internalID: -423248225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: check
+      rect:
+        serializedVersion: 2
+        x: 856
+        y: 1470
+        width: 143
+        height: 187
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06c8892cefbd24b42bd38912fb33213c
+      internalID: 1260438299
       vertices: []
       indices: 
       edges: []
@@ -261,9 +305,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
+      check: 1260438299
       dice: 6530179738444782934
       face: 613435604629981061
       iris: 1257531276
+      rock: -423248225
       sheet_2: -3656531271222932061
       sheet_3: 3930011312167392660
       sheet_4: -96796154962138083

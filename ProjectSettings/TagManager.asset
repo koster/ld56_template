@@ -47,5 +47,8 @@ TagManager:
   - name: Slot
     uniqueID: 2109713077
     locked: 0
+  - name: Dice
+    uniqueID: 3277218535
+    locked: 0
   m_RenderingLayers:
   - Default

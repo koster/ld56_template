@@ -6,6 +6,7 @@ public class UI : MonoBehaviour
 {
     public TextMeshProUGUI debug_text;
     public UIPauseMenu pause;
+    public GameObject win;
 
     void Awake()
     {

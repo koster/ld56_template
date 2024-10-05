@@ -36,3 +36,8 @@ public interface IOnPlay
 {
     public IEnumerator OnPlayDice(DiceState dice);
 }
+
+public interface IOnPutIntoGoal
+{
+    public IEnumerator OnGoalDice(DiceState dice, DiceHolder holder);
+}

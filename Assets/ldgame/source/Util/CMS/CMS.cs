@@ -30,7 +30,7 @@ public static class CMS
     public static T Get<T>(string def_id = null) where T : CMSEntity
     {
         if (def_id == null)
-            def_id = Entity.Id<T>();
+            def_id = E.Id<T>();
         var findById = all.FindById(def_id) as T;
 
         if (findById == null)
@@ -68,7 +68,7 @@ public class CMSTable<T> where T : CMSEntity, new()
     public void Add(T inst)
     {
         if (inst.id == null)
-            inst.id = Entity.Id(inst.GetType());
+            inst.id = E.Id(inst.GetType());
         
         list.Add(inst);
         dict.Add(inst.id, inst);
@@ -167,7 +167,7 @@ public static class CMSUtil
     }
 }
 
-public static class Entity
+public static class E
 {
     public static string Id(Type getType)
     {

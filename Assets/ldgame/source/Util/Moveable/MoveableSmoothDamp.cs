@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class MoveableSmoothDamp : MoveableBase
@@ -6,6 +7,11 @@ public class MoveableSmoothDamp : MoveableBase
     public float smoothTime = 0.3F; 
     public float maxVelocity = 10f; 
     private Vector3 currentVelocity;
+
+    void Start()
+    {
+        targetPosition = transform.position; 
+    }
 
     protected override void PausableUpdate()
     {

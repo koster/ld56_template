@@ -49,7 +49,7 @@ public class AudioSystem : MonoBehaviour
 
     public void Play<T>() where T : CMSEntity
     {
-        Play(CMS.Get<T>(Entity.Id<T>()));
+        Play(CMS.Get<T>(E.Id<T>()));
     }
 
     public void Play(CMSEntity definition)
