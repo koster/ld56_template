@@ -6,7 +6,7 @@ public class DiceZone : MonoBehaviour
 {
     public List<InteractiveObject> objects = new List<InteractiveObject>();
     public float spacing = 1f;
-    public int maxHold = 999;
+
     public UnityAction<InteractiveObject> OnClickDice;
 
     public void Claim(InteractiveObject toClaim)

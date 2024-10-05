@@ -9,7 +9,9 @@ public static class G
     public static Savefile save;
     public static CameraHandle camera;
     public static Feel feel;
-
+    
+    public static InteractiveObject drag_dice;
+    
     public static bool IsPaused;
 
     public static UnityAction OnGameReady;

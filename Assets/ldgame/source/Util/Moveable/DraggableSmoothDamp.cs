@@ -20,7 +20,10 @@ public class DraggableSmoothDamp : MonoBehaviour, IPointerDownHandler, IPointerU
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        isDragging = true; 
+        G.main.StartDrag(this);
+        
+        isDragging = true;
+        
         origin = moveable.targetPosition;
         Vector3 screenPosition = mainCamera.WorldToScreenPoint(transform.position);
         offset = transform.position - mainCamera.ScreenToWorldPoint(new Vector3(eventData.position.x, eventData.position.y, screenPosition.z));
@@ -28,6 +31,8 @@ public class DraggableSmoothDamp : MonoBehaviour, IPointerDownHandler, IPointerU
 
     public void OnPointerUp(PointerEventData eventData)
     {
+        G.main.StopDrag();
+        
         isDragging = false; 
         moveable.targetPosition = origin;
     }

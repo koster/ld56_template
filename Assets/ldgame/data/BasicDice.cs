@@ -2,7 +2,7 @@ public class BasicDice : CMSEntity
 {
     public BasicDice()
     {
-        Define<TagPrefab>().prefab = "prefab/dice".Load<InteractiveObject>();
+        Define<TagPrefab>().prefab = "prefab/dice_view".Load<InteractiveObject>();
     }
 }
 

@@ -1,15 +1,24 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class Main : MonoBehaviour
 {
     public DiceZone hand;
     public DiceZone field;
 
-    void Start()
+    public UnityAction<InteractiveObject> OnReleaseDrag;
+
+    void Awake()
     {
         G.main = this;
+    }
+
+    void Start()
+    {
         CMS.Init();
         
         G.OnGameReady?.Invoke();
@@ -23,13 +32,22 @@ public class Main : MonoBehaviour
     IEnumerator PlayDice(InteractiveObject dice)
     {
         field.Claim(dice);
+        
+        yield return new WaitForSeconds(0.25f);
+
+        var roll = 1 + Random.Range(0, 6);
+        dice.SetValue(roll);
+        G.feel.UIPunchSoft();
+        
         yield break;
     }
 
     public void AddDice()
     {
         var basicDice = CMS.Get<BasicDice>();
+        var state = new ObjectState();
         var instance = Instantiate(basicDice.Get<TagPrefab>().prefab);
+        instance.SetState(state);
         hand.Claim(instance);
     }
 
@@ -55,5 +73,16 @@ public class Main : MonoBehaviour
             AddDice();
             G.feel.UIPunchSoft();
         }
+    }
+
+    public void StartDrag(DraggableSmoothDamp draggableSmoothDamp)
+    {
+        G.drag_dice = draggableSmoothDamp.GetComponent<InteractiveObject>();
+    }
+
+    public void StopDrag()
+    {
+        OnReleaseDrag?.Invoke(G.drag_dice);
+        G.drag_dice = null;
     }
 }
