@@ -278,7 +278,7 @@ TextureImporter:
         width: 143
         height: 187
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -287,6 +287,28 @@ TextureImporter:
       bones: []
       spriteID: 06c8892cefbd24b42bd38912fb33213c
       internalID: 1260438299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: goblin
+      rect:
+        serializedVersion: 2
+        x: 1108
+        y: 1440
+        width: 389
+        height: 461
+      alignment: 9
+      pivot: {x: 0.5450053, y: 0.05597043}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cdda5bf9529f47840b2f4ddb64aa8c0b
+      internalID: -1304168633
       vertices: []
       indices: 
       edges: []
@@ -308,6 +330,7 @@ TextureImporter:
       check: 1260438299
       dice: 6530179738444782934
       face: 613435604629981061
+      goblin: -1304168633
       iris: 1257531276
       rock: -423248225
       sheet_2: -3656531271222932061

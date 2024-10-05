@@ -54,6 +54,9 @@ public class DiceHolder : MonoBehaviour
 
         if (!GoalMatcher.Matches(spec, arg0))
             return false;
+
+        if (!arg0.state.isPlayed)
+            return false;
         
         return true;
     }

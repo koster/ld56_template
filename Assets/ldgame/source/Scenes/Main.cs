@@ -7,6 +7,11 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
+public class RunState
+{
+    public int level;
+}
+
 public class Main : MonoBehaviour
 {
     public DiceZone hand;
@@ -19,11 +24,16 @@ public class Main : MonoBehaviour
     public List<ChallengeContainer> challengesActive = new List<ChallengeContainer>();
     public List<Transform> challengeSlots = new List<Transform>();
 
+    List<string> levelSeq = new List<string>() { E.Id<Level1>(), E.Id<Level2>() };
+    
     void Awake()
     {
         interactor = new Interactor();
         interactor.Init();
 
+        if (G.run == null)
+            G.run = new RunState();
+        
         G.main = this;
     }
 
@@ -33,12 +43,20 @@ public class Main : MonoBehaviour
 
         G.OnGameReady?.Invoke();
 
-        LoadLevel<Level1>();
+        if (G.run.level < levelSeq.Count)
+            LoadLevel(CMS.Get<CMSEntity>(levelSeq[G.run.level]));
+        else
+            SceneManager.LoadScene("ldgame/end_screen");
     }
 
     public void LoadLevel<T>() where T : CMSEntity
     {
         var entity = CMS.Get<T>();
+        LoadLevel(entity);
+    }
+
+    public void LoadLevel(CMSEntity entity)
+    {
         var level = entity.Get<TagListChallenges>().all;
         foreach (var challenge in level)
         {
@@ -54,7 +72,15 @@ public class Main : MonoBehaviour
             var challenge = Instantiate(pf.prefab);
             var challengeContainer = challenge.GetComponent<ChallengeContainer>();
             challengeContainer.Load(challengeObject);
-            challenge.transform.position = challengeSlots[challengesActive.Count].position;
+
+            var preferSlot = -1;
+            var challengesActiveCount = challengesActive.Count;
+            if (challengeObject.Is<TagPreferSlot>(out var pfs))
+                preferSlot = pfs.idx;
+            if (preferSlot == -1)
+                preferSlot = challengesActiveCount;
+            
+            challenge.transform.position = challengeSlots[preferSlot].position;
             challengesActive.Add(challengeContainer);
         }
     }
@@ -79,6 +105,8 @@ public class Main : MonoBehaviour
         var onPlayDice = interactor.FindAll<IOnPlay>();
         foreach (var onPlay in onPlayDice)
             yield return onPlay.OnPlayDice(dice.state);
+
+        dice.state.isPlayed = true;
     }
 
     public void AddDice<T>() where T : CMSEntity
@@ -159,7 +187,11 @@ public class Main : MonoBehaviour
 
     IEnumerator WinSequence()
     {
+        G.run.level++;
         G.ui.win.SetActive(true);
-        yield break;
+
+        yield return new WaitForSeconds(1f);
+        
+        SceneManager.LoadScene(GameSettings.MAIN_SCENE);
     }
 }

@@ -298,7 +298,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highlight: {fileID: 5556984490735586253}
   target: {fileID: 1061335567174754557}
-  maxHold: 0
+  maxHold: 1
   goalValue: 0
   accumulatedValue: 0
   checkmark: {fileID: 8998136709660695079}

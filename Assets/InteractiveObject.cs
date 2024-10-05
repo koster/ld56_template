@@ -9,6 +9,7 @@ public class DiceState
     public CMSEntity model;
     public int rollValue;
     public InteractiveObject view;
+    public bool isPlayed;
 }
 
 public class InteractiveObject : MonoBehaviour, IPointerClickHandler

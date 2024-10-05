@@ -12,7 +12,7 @@ public class WebGLBuilder
     {
         UpdateBuildInfo();
 
-        string[] scenes = {  "Assets/ldgame/title_screen.unity", "Assets/ldgame/main.unity" };
+        string[] scenes = {  "Assets/ldgame/title_screen.unity", "Assets/ldgame/main.unity", "Assets/ldgame/end_screen" };
 
         PlayerSettings.defaultWebScreenWidth = 1340;
         PlayerSettings.defaultWebScreenHeight = 710;
