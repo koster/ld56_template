@@ -45,6 +45,7 @@ public class DiceZone : MonoBehaviour
         {
             var targetPos = GetTargetPos(i, alignedSet);
             alignedSet[i].moveable.targetPosition = targetPos;
+            alignedSet[i].order = i;
         }
     }
 
@@ -67,6 +68,6 @@ public class DiceZone : MonoBehaviour
         if (objects.Count == 0)
             return null;
 
-        return objects.Last();
+        return objects[^1];
     }
 }

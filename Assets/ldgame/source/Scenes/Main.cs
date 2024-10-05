@@ -1,9 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -62,6 +59,7 @@ public class Main : MonoBehaviour
             G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
             G.run.diceBag.Add(new DiceBagState(E.Id<FudgeDice>()));
             G.run.diceBag.Add(new DiceBagState(E.Id<FudgeDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<WildcardDice>()));
         }
 
         G.main = this;

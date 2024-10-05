@@ -5,6 +5,7 @@ public abstract class DiceBase : CMSEntity
     public DiceBase()
     {
         Define<TagPrefab>().prefab = "prefab/dice_view".Load<InteractiveObject>();
+        Define<TagDescription>().loc = $"Regular dice";
     }
 }
 

@@ -313,6 +313,72 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: sheet_0
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 1138
+        width: 252
+        height: 247
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d42637992fa34e4a821da3b644167d3
+      internalID: -740218864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_1
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 1214
+        width: 152
+        height: 154
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac7fb2804a39c7e4aa0f2c1cf69a48c3
+      internalID: -243789733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_2
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 1202
+        width: 145
+        height: 117
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dcba9664a6ff2d7409b23a46d3c3a4f1
+      internalID: -3656531271222932061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -333,12 +399,14 @@ TextureImporter:
       goblin: -1304168633
       iris: 1257531276
       rock: -423248225
+      sheet_0: -740218864
+      sheet_1: -243789733
       sheet_2: -3656531271222932061
-      sheet_3: 3930011312167392660
-      sheet_4: -96796154962138083
-      sheet_5: -7054820123952135176
-      sheet_6: 4530623484691778272
-      sheet_7: -5581956015464806101
+      sheet_3: -159747199
+      sheet_4: -1308800216
+      sheet_5: -1667498040
+      sheet_6: -1036098198
+      sheet_7: 705870172
       slot: -1302611160
   mipmapLimitGroupName: 
   pSDRemoveMatte: 1

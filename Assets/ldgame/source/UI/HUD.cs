@@ -6,6 +6,7 @@ public class HUD : MonoBehaviour
 {
     public TextMeshProUGUI DiceView;
     public Button EndTurn;
+    public UITooltip tooltip;
     
     public Slider Health;
     public TMP_Text HealthValue;
@@ -13,6 +14,7 @@ public class HUD : MonoBehaviour
     void Awake()
     {
         G.hud = this;
+        G.hud.tooltip.Hide();
     }
 
     void Start()

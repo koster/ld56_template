@@ -124,6 +124,8 @@ public static class GoalMatcher
     {
         if (obj == null) return false;
         if (obj.state == null) return false;
+
+        if (obj.state.model.Is<TagWildcard>()) return true;
         
         switch (goal.type)
         {

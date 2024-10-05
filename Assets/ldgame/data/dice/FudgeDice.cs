@@ -7,6 +7,7 @@ public class FudgeDice : BasicDice
     {
         Define<TagTint>().color = Color.yellow;
         Define<TagFudgeLastDice>().delta = 1;
+        Define<TagDescription>().loc = $"{TextStuff.Fudge}: Adds 1 to the last played dice!";
     }
 }
 

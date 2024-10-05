@@ -1,8 +1,8 @@
-using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 
 public class DiceState
 {
@@ -12,7 +12,7 @@ public class DiceState
     public bool isPlayed;
 }
 
-public class InteractiveObject : MonoBehaviour, IPointerClickHandler
+public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public SpriteRenderer spriteRenderer;
     public GameObject shadow;
@@ -26,6 +26,8 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler
 
     public DiceZone zone;
 
+    public int order;
+
     void Awake()
     {
         value.text = "";
@@ -36,7 +38,7 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler
     {
         state = diceState;
         state.view = this;
-        
+
         if (state.model.Is<TagTint>(out var tint))
             spriteRenderer.color = tint.color;
     }
@@ -57,6 +59,9 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler
 
     void Update()
     {
+        var sortingGroup = GetComponent<SortingGroup>();
+        if (sortingGroup != null)
+            sortingGroup.sortingOrder = order;
         shadow?.SetActive(zone?.isShadow ?? false);
     }
 
@@ -69,5 +74,28 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler
     {
         if (zone != null)
             zone.Release(this);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        var desc = TryGetSomethingDesc();
+        if (!string.IsNullOrEmpty(desc))
+            G.hud.tooltip.Show(desc);
+    }
+
+    string TryGetSomethingDesc()
+    {
+        if (state != null)
+        {
+            if (state.model.Is<TagDescription>(out var td))
+                return td.loc;
+        }
+
+        return null;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        G.hud.tooltip.Hide();
     }
 }
