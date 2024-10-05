@@ -50,5 +50,8 @@ TagManager:
   - name: Dice
     uniqueID: 3277218535
     locked: 0
+  - name: HUD
+    uniqueID: 840682143
+    locked: 0
   m_RenderingLayers:
   - Default

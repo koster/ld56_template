@@ -10,6 +10,8 @@ public class ServicedMain : MonoBehaviour
     {
         if (!isInitialized)
         {
+            G.run = null;
+            
             GameObject servicedMain = new GameObject("GameMain");
             servicedMain.AddComponent<ServicedMain>();
             DontDestroyOnLoad(servicedMain);

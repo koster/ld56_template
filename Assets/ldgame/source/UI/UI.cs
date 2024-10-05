@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -7,6 +6,7 @@ public class UI : MonoBehaviour
     public TextMeshProUGUI debug_text;
     public UIPauseMenu pause;
     public GameObject win;
+    public GameObject defeat;
 
     void Awake()
     {

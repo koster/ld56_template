@@ -26,7 +26,7 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler
 
     public DiceZone zone;
 
-    void Start()
+    void Awake()
     {
         value.text = "";
         draggable = GetComponent<DraggableSmoothDamp>();

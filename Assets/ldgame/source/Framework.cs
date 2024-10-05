@@ -5,6 +5,7 @@ public static class G
 {
     public static AudioSystem audio;
     public static Main main;
+    public static HUD hud;
     public static UI ui;
     public static Savefile save;
     public static CameraHandle camera;

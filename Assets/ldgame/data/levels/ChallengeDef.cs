@@ -37,7 +37,7 @@ public class ChallengeGoalDefinition : EntityComponentDefinition
     public int goalValue;
 }
 
-public class ChallengeDefinition : EntityComponentDefinition
+public class TagChallengeDefinition : EntityComponentDefinition
 {
     public List<ChallengeGoalDefinition> goals = new List<ChallengeGoalDefinition>();
 }
@@ -49,8 +49,14 @@ public class ChallengeRock : CMSEntity
     {
         Define<TagPrefab>().prefab = "prefab/challenges/rock".Load<InteractiveObject>();
         Define<TagPreferSlot>().idx = 0;
-        Define<ChallengeDefinition>().goals.Add(new ChallengeGoalDefinition() { type = GoalType.SINK, goalValue = 12 });
+        Define<TagChallengeDefinition>().goals.Add(new ChallengeGoalDefinition() { type = GoalType.SINK, goalValue = 12 });
+        Define<TagChallengePenalty>().damage = 5;
     }
+}
+
+public class TagChallengePenalty : EntityComponentDefinition
+{
+    public int damage;
 }
 
 
@@ -60,7 +66,8 @@ public class ChallengeGoblinEven : CMSEntity
     {
         Define<TagPrefab>().prefab = "prefab/challenges/goblin".Load<InteractiveObject>();
         Define<TagPreferSlot>().idx = 1;
-        Define<ChallengeDefinition>().goals.Add(new ChallengeGoalDefinition() { type = GoalType.EVEN });
+        Define<TagChallengeDefinition>().goals.Add(new ChallengeGoalDefinition() { type = GoalType.EVEN });
+        Define<TagChallengePenalty>().damage = 3;
     }
 }
 
@@ -70,7 +77,8 @@ public class ChallengeGoblinOdd : CMSEntity
     {
         Define<TagPrefab>().prefab = "prefab/challenges/goblin".Load<InteractiveObject>();
         Define<TagPreferSlot>().idx = 2;
-        Define<ChallengeDefinition>().goals.Add(new ChallengeGoalDefinition() { type = GoalType.ODD });
+        Define<TagChallengeDefinition>().goals.Add(new ChallengeGoalDefinition() { type = GoalType.ODD });
+        Define<TagChallengePenalty>().damage = 3;
     }
 }
 

@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ChallengeContainer : MonoBehaviour
 {
+    public CMSEntity model;
     public List<DiceHolder> slots = new List<DiceHolder>();
 
     public bool IsComplete()
@@ -18,7 +19,8 @@ public class ChallengeContainer : MonoBehaviour
 
     public void Load(CMSEntity challengeObject)
     {
-        var challenge = challengeObject.Get<ChallengeDefinition>();
+        model = challengeObject;
+        var challenge = challengeObject.Get<TagChallengeDefinition>();
         for (var index = 0; index < challenge.goals.Count; index++)
         {
             slots[index].spec = challenge.goals[index];

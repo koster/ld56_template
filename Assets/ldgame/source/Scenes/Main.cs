@@ -1,15 +1,31 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
+public class DiceBagState
+{
+    public string id;
+
+    public DiceBagState(string cid)
+    {
+        id = cid;
+    }
+}
+
 public class RunState
 {
     public int level;
+    public List<DiceBagState> diceBag = new List<DiceBagState>();
+    public int drawSize = 3;
+    public int health = 10;
+    public int maxHealth = 10;
 }
 
 public class Main : MonoBehaviour
@@ -24,17 +40,54 @@ public class Main : MonoBehaviour
     public List<ChallengeContainer> challengesActive = new List<ChallengeContainer>();
     public List<Transform> challengeSlots = new List<Transform>();
 
+    public List<DiceBagState> diceBag;
+
     List<string> levelSeq = new List<string>() { E.Id<Level1>(), E.Id<Level2>() };
-    
+
     void Awake()
     {
         interactor = new Interactor();
         interactor.Init();
 
         if (G.run == null)
+        {
             G.run = new RunState();
-        
+            
+            G.run.maxHealth = 15;
+            G.run.health = G.run.maxHealth;
+            
+            G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<FudgeDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<FudgeDice>()));
+        }
+
         G.main = this;
+    }
+
+    public void EndTurn()
+    {
+        StartCoroutine(EndTurnCoroutine());
+    }
+
+    IEnumerator EndTurnCoroutine()
+    {
+        var obstacles = interactor.FindAll<IOnEndTurnObstacle>();
+
+        foreach (var ob in obstacles)
+        {
+            foreach (var challengeActive in challengesActive)
+            {
+                if (!challengeActive.IsComplete())
+                {
+                    yield return ob.OnEndTurn(challengeActive);
+                }
+            }
+        }
+        
+        DrawDice();
     }
 
     void Start()
@@ -47,6 +100,19 @@ public class Main : MonoBehaviour
             LoadLevel(CMS.Get<CMSEntity>(levelSeq[G.run.level]));
         else
             SceneManager.LoadScene("ldgame/end_screen");
+
+        diceBag = new List<DiceBagState>(G.run.diceBag);
+        diceBag.Shuffle();
+        DrawDice();
+    }
+
+    void DrawDice()
+    {
+        for (var i = 0; i < G.run.drawSize; i++)
+        {
+            if (diceBag.Count > 0)
+                AddDice(diceBag.Pop().id);
+        }
     }
 
     public void LoadLevel<T>() where T : CMSEntity
@@ -79,7 +145,7 @@ public class Main : MonoBehaviour
                 preferSlot = pfs.idx;
             if (preferSlot == -1)
                 preferSlot = challengesActiveCount;
-            
+
             challenge.transform.position = challengeSlots[preferSlot].position;
             challengesActive.Add(challengeContainer);
         }
@@ -111,15 +177,15 @@ public class Main : MonoBehaviour
 
     public void AddDice<T>() where T : CMSEntity
     {
-        AddDice(typeof(T));
+        AddDice(E.Id<T>());
     }
 
-    public void AddDice(Type t)
+    public void AddDice(string t)
     {
-        var basicDice = CMS.Get<CMSEntity>(E.Id(t));
+        var basicDice = CMS.Get<CMSEntity>(t);
         var state = new DiceState();
         state.model = basicDice;
-        
+
         var instance = Instantiate(basicDice.Get<TagPrefab>().prefab);
         instance.SetState(state);
         hand.Claim(instance);
@@ -134,11 +200,13 @@ public class Main : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
+            G.run = null;
             SceneManager.LoadScene(GameSettings.MAIN_SCENE);
         }
 
         if (Input.GetKeyDown(KeyCode.I))
         {
+            G.run = null;
             SceneManager.LoadScene(0);
         }
 
@@ -191,7 +259,51 @@ public class Main : MonoBehaviour
         G.ui.win.SetActive(true);
 
         yield return new WaitForSeconds(1f);
-        
+
         SceneManager.LoadScene(GameSettings.MAIN_SCENE);
+    }
+
+    public IEnumerator DealDamage(int dmg)
+    {
+        G.run.health -= dmg;
+        if (G.run.health <= 0)
+        {
+            G.run.health = 0;
+            yield return Loss();
+        }
+    }
+
+    IEnumerator Loss()
+    {
+        G.ui.defeat.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        G.run = null;
+        SceneManager.LoadScene(GameSettings.MAIN_SCENE);
+    }
+}
+
+interface IOnEndTurnFieldDice
+{
+    public IEnumerator OnEndTurnInField(DiceState state);
+}
+
+interface IOnEndTurnObstacle
+{
+    public IEnumerator OnEndTurn(ChallengeContainer obstacle);
+}
+
+public class DealDamagePenalty : BaseInteraction, IOnEndTurnObstacle
+{
+    public IEnumerator OnEndTurn(ChallengeContainer obstacle)
+    {
+        if (obstacle.model.Is<TagChallengePenalty>(out var penalty))
+        {
+            if (penalty.damage > 0)
+            {
+                obstacle.GetComponent<InteractiveObject>().Punch();
+                yield return G.main.DealDamage(penalty.damage);
+            }
+        }
+            
     }
 }
