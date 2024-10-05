@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class NegFudgeDice : BasicDice
@@ -6,7 +5,8 @@ public class NegFudgeDice : BasicDice
     public NegFudgeDice()
     {
         Define<TagTint>().color = Color.red;
-        Define<TagFudgeLastDice>().delta = -1;
+        Define<TagFudgeDice>().delta = -1;
+        Define<TagFudgeDice>().pos = DiceType.LAST;
         Define<TagDescription>().loc = $"{TextStuff.Fudge}: Deducts 1 from the last played dice!";
     }
 }

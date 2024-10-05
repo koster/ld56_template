@@ -6,6 +6,7 @@ public abstract class DiceBase : CMSEntity
     {
         Define<TagPrefab>().prefab = "prefab/dice_view".Load<InteractiveObject>();
         Define<TagDescription>().loc = $"Regular dice";
+        Define<TagSides>().sides = 6;
     }
 }
 
@@ -14,6 +15,11 @@ public class BasicDice : DiceBase
     public BasicDice()
     {
     }
+}
+
+public class TagSides : EntityComponentDefinition
+{
+    public int sides;
 }
 
 public class TagTint : EntityComponentDefinition

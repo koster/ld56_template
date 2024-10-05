@@ -1,3 +1,4 @@
+using System.Collections;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class DiceState
     public int rollValue;
     public InteractiveObject view;
     public bool isPlayed;
+    public int Sides => model.Get<TagSides>().sides;
 }
 
 public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
@@ -17,6 +19,8 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
     public SpriteRenderer spriteRenderer;
     public GameObject shadow;
 
+    public Transform scaleRoot;
+    
     public DiceState state;
 
     public TMP_Text value;
@@ -43,10 +47,16 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
             spriteRenderer.color = tint.color;
     }
 
-    public void SetValue(int val)
+    public IEnumerator SetValue(int val)
     {
         state.rollValue = val;
         value.text = val.ToString();
+
+        if (state.rollValue > state.Sides)
+        {
+            var delta = state.rollValue - state.Sides;
+            yield return G.main.TransferToNextDice(this, delta);
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -78,6 +88,12 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (scaleRoot)
+        {
+            scaleRoot.DOKill();
+            scaleRoot.DOScale(1.25f, 0.1f).SetEase(Ease.OutBack);
+        }
+
         var desc = TryGetSomethingDesc();
         if (!string.IsNullOrEmpty(desc))
             G.hud.tooltip.Show(desc);
@@ -96,6 +112,13 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        if (scaleRoot)
+        {
+            scaleRoot.DOKill();
+            scaleRoot.DOScale(1f, 0.2f);
+        }
+        
+        
         G.hud.tooltip.Hide();
     }
 }

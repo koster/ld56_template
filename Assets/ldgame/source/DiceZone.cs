@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,7 +18,12 @@ public class DiceZone : MonoBehaviour
             toClaim.zone.Release(toClaim);
 
         toClaim.zone = this;
-        objects.Insert(0, toClaim);
+
+        var pos = 0;
+        var insertFilters = G.main.interactor.FindAll<IFilterInsertPos>();
+        foreach (var inf in insertFilters)
+            pos = inf.OverrideIndex(pos, this, toClaim);
+        objects.Insert(pos, toClaim);
     }
 
     public void Release(InteractiveObject toClaim)
@@ -68,6 +74,38 @@ public class DiceZone : MonoBehaviour
         if (objects.Count == 0)
             return null;
 
+        return objects[1];
+    }
+
+    public InteractiveObject FrontDice()
+    {
+        if (objects.Count == 0)
+            return null;
+
         return objects[^1];
     }
+
+    public InteractiveObject GetNextDice(InteractiveObject interactiveObject)
+    {
+        var iof = objects.IndexOf(interactiveObject);
+        if (iof + 1 < objects.Count)
+            return objects[iof + 1];
+        return null;
+    }
+
+    public InteractiveObject ResolvePos(DiceType unknownPos)
+    {
+        switch (unknownPos)
+        {
+            case DiceType.FRONT: return FrontDice();
+            case DiceType.LAST: return LastDice();
+            default:
+                throw new ArgumentOutOfRangeException(nameof(unknownPos), unknownPos, null);
+        }
+    }
+}
+
+public interface IFilterInsertPos 
+{
+    int OverrideIndex(int dindx, DiceZone diceZone, InteractiveObject toClaim);
 }

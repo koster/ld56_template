@@ -6,26 +6,37 @@ public class FudgeDice : BasicDice
     public FudgeDice()
     {
         Define<TagTint>().color = Color.yellow;
-        Define<TagFudgeLastDice>().delta = 1;
-        Define<TagDescription>().loc = $"{TextStuff.Fudge}: Adds 1 to the last played dice!";
+        Define<TagFudgeDice>().delta = 1;
+        Define<TagFudgeDice>().pos = DiceType.FRONT;
+        Define<TagDescription>().loc = $"{TextStuff.Fudge}: Adds 1 to the {TextStuff.Front} dice!";
     }
 }
 
-public class TagFudgeLastDice : EntityComponentDefinition
+public enum DiceType
+{
+    FRONT,
+    LAST
+}
+
+
+public class TagFudgeDice : EntityComponentDefinition
 {
     public int delta;
+    public DiceType pos;
 }
 
 public class FudgeDiceInteraction : BaseInteraction, IOnPlay
 {
     public IEnumerator OnPlayDice(DiceState dice)
     {
-        if (dice.model.Is<TagFudgeLastDice>(out var tfl))
+        if (dice.model.Is<TagFudgeDice>(out var tfl))
         {
-            var lastDice = G.main.field.LastDice();
+            var lastDice = G.main.field.ResolvePos(tfl.pos);
             if (lastDice != null)
             {
-                lastDice.SetValue(lastDice.state.rollValue + tfl.delta);
+                dice.view.Punch();
+                yield return new WaitForSeconds(0.25f);
+                yield return lastDice.SetValue(lastDice.state.rollValue + tfl.delta);
                 lastDice.Punch();
                 yield return new WaitForSeconds(0.25f);
             }

@@ -49,10 +49,10 @@ public class Main : MonoBehaviour
         if (G.run == null)
         {
             G.run = new RunState();
-            
+
             G.run.maxHealth = 15;
             G.run.health = G.run.maxHealth;
-            
+
             G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
             G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
             G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
@@ -60,6 +60,12 @@ public class Main : MonoBehaviour
             G.run.diceBag.Add(new DiceBagState(E.Id<FudgeDice>()));
             G.run.diceBag.Add(new DiceBagState(E.Id<FudgeDice>()));
             G.run.diceBag.Add(new DiceBagState(E.Id<WildcardDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<NegFudgeDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<EvenDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<OddDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<Min2Dice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<RerollDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<FrontDice>()));
         }
 
         G.main = this;
@@ -84,7 +90,7 @@ public class Main : MonoBehaviour
                 }
             }
         }
-        
+
         DrawDice();
     }
 
@@ -160,8 +166,18 @@ public class Main : MonoBehaviour
 
         yield return new WaitForSeconds(0.25f);
 
-        var roll = 1 + Random.Range(0, 6);
-        dice.SetValue(roll);
+        yield return Roll(dice);
+    }
+
+    public IEnumerator Roll(InteractiveObject dice)
+    {
+        var roll = 1 + Random.Range(0, dice.state.Sides);
+
+        var rollFill = interactor.FindAll<IRollFilter>();
+        foreach (var rfilter in rollFill)
+            roll = rfilter.OverwriteRoll(dice.state, roll);
+
+        yield return dice.SetValue(roll);
         G.feel.UIPunchSoft();
 
         yield return new WaitForSeconds(0.25f);
@@ -210,11 +226,7 @@ public class Main : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.D))
         {
-            if (Random.Range(0f, 1f) < 0.5f)
-                AddDice<BasicDice>();
-            else
-                AddDice<FudgeDice>();
-
+            DrawDice();
             G.feel.UIPunchSoft();
         }
     }
@@ -278,6 +290,13 @@ public class Main : MonoBehaviour
         G.run = null;
         SceneManager.LoadScene(GameSettings.MAIN_SCENE);
     }
+
+    public IEnumerator TransferToNextDice(InteractiveObject obj, int delta)
+    {
+        var next = field.GetNextDice(obj);
+        if (next != null)
+            yield return next.SetValue(next.state.rollValue + delta);
+    }
 }
 
 interface IOnEndTurnFieldDice
@@ -302,6 +321,5 @@ public class DealDamagePenalty : BaseInteraction, IOnEndTurnObstacle
                 yield return G.main.DealDamage(penalty.damage);
             }
         }
-            
     }
 }

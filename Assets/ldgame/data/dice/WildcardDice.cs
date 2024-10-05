@@ -6,6 +6,8 @@ public static class TextStuff
     public static string Pinkish = "#d879e0";
     public static string Wildcard = "Wilcard".Color(Pinkish);
     public static string Fudge = "Fudge".Color(Pinkish);
+    public static string Front = "Front".Color(Color.green);
+    public static string Spectral = "Spectral".Color(Pinkish);
 }
 
 public class WildcardDice : BasicDice
