@@ -9,6 +9,6 @@ public class ChallengeTree : CMSEntity
         Define<TagChallengeDefinition>().goals.Add(new ChallengeGoalDefinition() { type = GoalType.VALUE, goalValue = 3 });
         Define<TagChallengeDefinition>().goals.Add(new ChallengeGoalDefinition() { type = GoalType.VALUE, goalValue = 4 });
         Define<TagChallengeDefinition>().goals.Add(new ChallengeGoalDefinition() { type = GoalType.VALUE, goalValue = 5 });
-        Define<TagChallengePenalty>().damage = 3;
+        Define<TagChallengePenalty>().damage = 2;
     }
 }

@@ -30,14 +30,19 @@ public class RunState
 public class Main : MonoBehaviour
 {
     public DiceZone hand;
+    public DiceZone storage;
     public DiceZone field;
     public DiceZone picker;
 
+    public List<Sprite> sides = new List<Sprite>();
+    
     [FormerlySerializedAs("reward_up")]
     public TMP_Text RewardUp;
     [FormerlySerializedAs("reward_dn")]
     public TMP_Text ReardDn;
-    
+
+    public SpriteRenderer PlacementHint;
+
     public Interactor interactor;
 
     public UnityAction<InteractiveObject> OnReleaseDrag;
@@ -58,7 +63,7 @@ public class Main : MonoBehaviour
 
         RewardUp.enabled = false;
         ReardDn.enabled = false;
-        
+
         if (G.run == null)
         {
             G.run = new RunState();
@@ -78,6 +83,7 @@ public class Main : MonoBehaviour
     }
 
     InteractiveObject pickedItem;
+
     void OnClickPickerDice(InteractiveObject arg0)
     {
         pickedItem = arg0;
@@ -93,11 +99,22 @@ public class Main : MonoBehaviour
 
         RewardUp.transform.DOScale(1f, 0.5f).SetEase(Ease.OutBack);
         ReardDn.transform.DOScale(1f, 0.5f).SetEase(Ease.OutBack);
-        
-        var allDice = CMS.GetAll<DiceBase>();
-        List<DiceRarity> rarityToSuggest = levelEntity.Is<TagHard>() ? 
-            new List<DiceRarity> { DiceRarity.RARE } : 
-            new List<DiceRarity>() { DiceRarity.COMMON, DiceRarity.UNCOMMON };
+
+        yield return SetupPicker(new List<DiceRarity>() { DiceRarity.COMMON, DiceRarity.UNCOMMON });
+
+        if (levelEntity.Is<TagHard>())
+        {
+            yield return new WaitForSeconds(0.5f);
+            yield return SetupPicker(new List<DiceRarity> { DiceRarity.RARE });
+        }
+
+        RewardUp.transform.DOScale(0f, 0.5f).SetEase(Ease.OutBack);
+        ReardDn.transform.DOScale(0f, 0.5f).SetEase(Ease.OutBack);
+    }
+
+    IEnumerator SetupPicker(List<DiceRarity> rarityToSuggest)
+    {
+        var allDice = CMS.GetAll<BasicDice>();
 
         var allRarity = allDice.FindAll(m => rarityToSuggest.Contains(m.Get<TagRarity>().rarity));
         allRarity.Shuffle();
@@ -105,19 +122,16 @@ public class Main : MonoBehaviour
         for (var i = 0; i < 3; i++)
             picker.Claim(CreateDice(allRarity[i].id));
 
-        while (pickedItem == null)
-            yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(0.1f);
+        
+        pickedItem = null;
+        while (pickedItem == null) yield return new WaitForEndOfFrame();
 
         hand.Claim(pickedItem);
 
-        var interactiveObjects = new List<InteractiveObject>(picker.objects);
-        for (var i = 0; i < interactiveObjects.Count; i++)
-            yield return KillDice(interactiveObjects[i].state);
-            
+        yield return picker.Clear();
+
         G.run.diceBag.Add(new DiceBagState(pickedItem.state.model.id));
-        
-        RewardUp.transform.DOScale(0f, 0.5f).SetEase(Ease.OutBack);
-        ReardDn.transform.DOScale(0f, 0.5f).SetEase(Ease.OutBack);
     }
 
     public void EndTurn()
@@ -127,6 +141,10 @@ public class Main : MonoBehaviour
 
     IEnumerator EndTurnCoroutine()
     {
+        G.hud.DisableHud();
+        
+        yield return field.Clear();
+
         var obstacles = interactor.FindAll<IOnEndTurnObstacle>();
 
         foreach (var ob in obstacles)
@@ -141,23 +159,29 @@ public class Main : MonoBehaviour
         }
 
         yield return DrawDice();
+        
+        G.hud.EnableHud();
     }
 
-    void Start()
+    IEnumerator Start()
     {
         CMS.Init();
+        
+        G.hud.DisableHud();
 
         G.OnGameReady?.Invoke();
 
         if (G.run.level < levelSeq.Count)
-            LoadLevel(CMS.Get<CMSEntity>(levelSeq[G.run.level]));
+            yield return LoadLevel(CMS.Get<CMSEntity>(levelSeq[G.run.level]));
         else
             SceneManager.LoadScene("ldgame/end_screen");
 
         diceBag = new List<DiceBagState>(G.run.diceBag);
         diceBag.Shuffle();
+
+        yield return DrawDice();
         
-        StartCoroutine(DrawDice());
+        G.hud.EnableHud();
     }
 
     IEnumerator DrawDice()
@@ -166,39 +190,38 @@ public class Main : MonoBehaviour
         {
             if (diceBag.Count == 0)
             {
-                diceBag.AddRange(discardBag);
-                discardBag.Clear();
-
-                G.hud.DiceView.transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0.2f), 0.2f);
+                AddDice<BasicDice>();
             }
-            
-            var diceBagState = diceBag.Pop();
-            var diceState = AddDice(diceBagState.id);
-            diceState.bagState = diceBagState;
+            else
+            {
+                var diceBagState = diceBag.Pop();
+                var diceState = AddDice(diceBagState.id);
+                diceState.bagState = diceBagState;
+            }
 
             yield return new WaitForSeconds(0.2f);
         }
     }
 
-    public void LoadLevel<T>() where T : CMSEntity
+    public IEnumerator LoadLevel<T>() where T : CMSEntity
     {
         var entity = CMS.Get<T>();
-        LoadLevel(entity);
+        yield return LoadLevel(entity);
     }
 
-    public void LoadLevel(CMSEntity entity)
+    public IEnumerator LoadLevel(CMSEntity entity)
     {
         levelEntity = entity;
-        
+
         var level = entity.Get<TagListChallenges>().all;
         foreach (var challenge in level)
         {
             var challengeObject = CMS.Get<CMSEntity>(challenge);
-            AddChallenge(challengeObject);
+            yield return AddChallenge(challengeObject);
         }
     }
 
-    public void AddChallenge(CMSEntity challengeObject)
+    public IEnumerator AddChallenge(CMSEntity challengeObject)
     {
         if (challengeObject.Is<TagPrefab>(out var pf))
         {
@@ -211,8 +234,22 @@ public class Main : MonoBehaviour
             if (challengeObject.Is<TagPreferSlot>(out var pfs)) preferSlot = pfs.idx;
             if (preferSlot == -1) preferSlot = challengesActiveCount;
 
-            challenge.transform.position = challengeSlots[preferSlot].position;
+            var ct = challenge.transform;
+            
+            ct.position = challengeSlots[preferSlot].position;
+
+            challenge.moveable.enabled = false;
+            
+            var offset = Vector3.up * 5;
+            ct.position += offset;
+            var ls = ct.localScale;
+            ct.localScale = Vector3.zero;
+            ct.DOScale(ls, 0.5f).SetEase(Ease.OutBack);
+            ct.DOMove(ct.position - offset, 0.5f).SetEase(Ease.OutBounce);
+
             challengesActive.Add(challengeContainer);
+
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
@@ -273,8 +310,12 @@ public class Main : MonoBehaviour
         return instance;
     }
 
+    bool isWin;
+    
     void Update()
     {
+        PlacementHintLogic();
+
         G.ui.debug_text.text = "";
         // G.ui.debug_text.text += "R-reload\n";
         // G.ui.debug_text.text += "D-add dice\n";
@@ -299,6 +340,23 @@ public class Main : MonoBehaviour
         }
     }
 
+    void PlacementHintLogic()
+    {
+        PlacementHint.enabled = !isWin;
+
+        if (G.drag_dice != null)
+        {
+            if (G.drag_dice.state.isPlayed)
+                PlacementHint.color = new Color(1f, 1f, 1f, 0.25f);
+            else
+                PlacementHint.color = Color.white;
+        }
+        else
+        {
+            PlacementHint.color = new Color(1f, 1f, 1f, 0.25f);
+        }
+    }
+
     public void StartDrag(DraggableSmoothDamp draggableSmoothDamp)
     {
         G.drag_dice = draggableSmoothDamp.GetComponent<InteractiveObject>();
@@ -314,15 +372,15 @@ public class Main : MonoBehaviour
     {
         if (dice.bagState != null)
             discardBag.Add(dice.bagState);
-            
-        if (dice.isDead) 
+
+        if (dice.isDead)
             yield break;
-        
+
         dice.isDead = true;
-        
+
         dice.view.transform.DOScale(0f, 0.25f);
         yield return new WaitForSeconds(0.25f);
-        
+
         dice.view.Leave();
         Destroy(dice.view.gameObject);
     }
@@ -336,7 +394,7 @@ public class Main : MonoBehaviour
                 yield break;
             }
         }
-        
+
         yield return WinSequence();
     }
 
@@ -347,7 +405,7 @@ public class Main : MonoBehaviour
         foreach (var container in challengesActive)
             if (container.IsComplete())
                 markForKill.Add(container);
-        
+
         foreach (var mfk in markForKill)
             yield return ChallengeDefeated(mfk);
     }
@@ -360,11 +418,14 @@ public class Main : MonoBehaviour
 
     IEnumerator WinSequence()
     {
+        isWin = true;
+
+        yield return storage.Clear();
         yield return field.Clear();
         yield return hand.Clear();
 
         yield return ShowPicker();
-        
+
         G.run.level++;
         G.ui.win.SetActive(true);
 

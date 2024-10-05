@@ -244,7 +244,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 590018610245711439}
-  - component: {fileID: 4612011771619355680}
+  - component: {fileID: 2329542727562822886}
+  - component: {fileID: 1117922258945666656}
   m_Layer: 0
   m_Name: scale_root
   m_TagString: Untagged
@@ -272,7 +273,19 @@ Transform:
   - {fileID: 8016797066194098772}
   m_Father: {fileID: 8180229955075737609}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &4612011771619355680
+--- !u!210 &2329542727562822886
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376728221665325636}
+  m_Enabled: 1
+  m_SortingLayerID: -1017748761
+  m_SortingLayer: 2
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
+--- !u!61 &1117922258945666656
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -868,7 +881,6 @@ GameObject:
   - component: {fileID: 7166603950755489013}
   - component: {fileID: 7464515963155799859}
   - component: {fileID: -2766719729112121768}
-  - component: {fileID: 6900970814052984451}
   m_Layer: 0
   m_Name: dice_view
   m_TagString: Untagged
@@ -925,6 +937,7 @@ MonoBehaviour:
   moveable: {fileID: -2766719729112121768}
   draggable: {fileID: 0}
   zone: {fileID: 0}
+  sortingGroup: {fileID: 2329542727562822886}
   order: 0
 --- !u!114 &-2766719729112121768
 MonoBehaviour:
@@ -941,18 +954,6 @@ MonoBehaviour:
   targetPosition: {x: 0, y: 0, z: 0}
   smoothTime: 0.1
   maxVelocity: 55
---- !u!210 &6900970814052984451
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7175850951274650362}
-  m_Enabled: 1
-  m_SortingLayerID: -1017748761
-  m_SortingLayer: 2
-  m_SortingOrder: 0
-  m_SortAtRoot: 0
 --- !u!1 &7702425005607884350
 GameObject:
   m_ObjectHideFlags: 0

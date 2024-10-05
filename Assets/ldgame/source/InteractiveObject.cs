@@ -31,6 +31,8 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
     public DraggableSmoothDamp draggable;
 
     public DiceZone zone;
+    
+    public SortingGroup sortingGroup;
 
     public int order;
 
@@ -52,13 +54,21 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
     public IEnumerator SetValue(int val)
     {
         state.rollValue = val;
-        value.text = val.ToString();
 
         if (state.rollValue > state.Sides)
         {
-            var delta = state.rollValue - state.Sides;
-            yield return G.main.TransferToNextDice(this, delta);
+            // var delta = state.rollValue - state.Sides;
+            // yield return G.main.TransferToNextDice(this, delta);
+            //
+            
+            Punch();
+            G.feel.UIPunchSoft();
+            yield return new WaitForSeconds(0.25f);
+            
+            state.rollValue = 1;
         }
+        
+        value.text = state.rollValue.ToString();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -72,14 +82,13 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
     void Update()
     {
         if (state != null)
-        {
             spriteRenderer.flipX = state.isPlayed;
-        }
 
-        var sortingGroup = GetComponent<SortingGroup>();
         if (sortingGroup != null)
             sortingGroup.sortingOrder = isMouseOver ? 9999 : order;
-        shadow?.SetActive(zone?.isShadow ?? false);
+        
+        if (shadow!=null)
+            shadow?.SetActive(zone?.isShadow ?? false);
     }
 
     public void Punch()
@@ -102,7 +111,7 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
         if (scaleRoot)
         {
             scaleRoot.DOKill();
-            scaleRoot.DOScale(1.25f, 0.1f).SetEase(Ease.OutBack);
+            scaleRoot.transform.localScale = Vector3.one * 1.25f;
         }
 
         var desc = TryGetSomethingDesc();

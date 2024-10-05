@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DiceHolder : MonoBehaviour
@@ -10,7 +9,8 @@ public class DiceHolder : MonoBehaviour
 
     public GameObject highlight;
     public TMP_Text target;
-
+    public SpriteRenderer side;
+    
     public int maxHold;
 
     public int goalValue;
@@ -79,18 +79,41 @@ public class DiceHolder : MonoBehaviour
     void Update()
     {
         RenderTarget();
-        highlight.SetActive(IsDiceEntrapped(G.drag_dice));
+        HighlightLogic();
+    }
+
+    void HighlightLogic()
+    {
+        highlight.SetActive(!isComplete);
+        
+        var h = highlight.GetComponent<SpriteRenderer>();
+        if (G.drag_dice != null && GoalMatcher.Matches(spec, G.drag_dice))
+        {
+            if (IsDiceEntrapped(G.drag_dice))
+                h.color = new Color(1f, 1f, 1f, 1f);
+            else
+                h.color = new Color(1f, 1f, 1f, 0.5f);
+        }
+        else
+        {
+            h.color = new Color(1f, 1f, 1f, 0f);
+        }
+        
     }
 
     void RenderTarget()
     {
+        side.enabled = false;
+        
         switch (spec.type)
         {
             case GoalType.NONE:
                 target.text = "";
                 break;
             case GoalType.VALUE:
-                target.text = spec.goalValue.ToString();
+                side.enabled = true;
+                side.sprite = G.main.sides[spec.goalValue-1];
+                target.text = "";
                 break;
             case GoalType.GREATER_THAN:
                 target.text = ">"+spec.goalValue.ToString();
@@ -120,6 +143,7 @@ public class DiceHolder : MonoBehaviour
         if (IsFilled())
         {
             target.text = "";
+            side.enabled = false;
             checkmark.gameObject.SetActive(true);
         }
     }
@@ -138,7 +162,7 @@ public static class GoalMatcher
     {
         if (obj == null) return false;
         if (obj.state == null) return false;
-
+        if (!obj.state.isPlayed) return false;
         if (obj.state.model.Is<TagWildcard>()) return true;
         
         switch (goal.type)

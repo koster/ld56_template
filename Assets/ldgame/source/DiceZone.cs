@@ -9,6 +9,8 @@ public class DiceZone : MonoBehaviour
     public List<InteractiveObject> objects = new List<InteractiveObject>();
     public float spacing = 1f;
 
+    public Rect capture;
+    
     public bool isShadow;
     public bool canDrag;
 
@@ -57,6 +59,12 @@ public class DiceZone : MonoBehaviour
         }
     }
 
+    public bool IsOverlap(InteractiveObject obj)
+    {
+        capture.center = transform.position;
+        return capture.Contains(obj.transform.position);
+    }
+    
     Vector3 GetTargetPos(int i, List<InteractiveObject> setToWatch)
     {
         var offset = i * spacing - (setToWatch.Count / 2f - 0.5f) * spacing;
@@ -66,9 +74,19 @@ public class DiceZone : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = new Color(0.5f, 0, 0, 0.25f);
-        Gizmos.DrawCube(transform.position, new Vector3(1, 1, 1));
-        Gizmos.DrawWireCube(transform.position, new Vector3(1, 1, 1));
+        Debug.Log(capture.size);
+        if (capture.size != Vector2.zero)
+        {
+            Gizmos.color = new Color(0.5f, 0, 0, 0.25f);
+            Gizmos.DrawCube(transform.position, capture.size);
+            Gizmos.DrawWireCube(transform.position, capture.size);
+        }
+        else
+        {
+            Gizmos.color = new Color(0.5f, 0, 0, 0.25f);
+            Gizmos.DrawCube(transform.position, new Vector3(1, 1, 1));
+            Gizmos.DrawWireCube(transform.position, new Vector3(1, 1, 1));
+        }
     }
 
     public InteractiveObject LastDice()

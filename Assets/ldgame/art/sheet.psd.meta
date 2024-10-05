@@ -69,7 +69,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -235,7 +235,7 @@ TextureImporter:
         height: 196
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 38, y: 23, z: 30, w: 27}
       customData: 
       outline: []
       physicsShape: []
@@ -410,7 +410,7 @@ TextureImporter:
         width: 191
         height: 264
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -419,6 +419,204 @@ TextureImporter:
       bones: []
       spriteID: e70e1c6d993052d44add1abe515b2c9d
       internalID: 1549172350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hl
+      rect:
+        serializedVersion: 2
+        x: 626
+        y: 797
+        width: 191
+        height: 191
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9fa2dc94ca70b814d8dac74ff14a6df2
+      internalID: 236231303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: d1
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 532
+        width: 116
+        height: 118
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b5ffb21726971048818e1e7571392c3
+      internalID: 1244836978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: d2
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 532
+        width: 116
+        height: 118
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f5da0ec3ddbc5744a321430d6de6546
+      internalID: 1148904167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: d3
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 532
+        width: 116
+        height: 118
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b80c9324aa76ed24a94d4190353b032f
+      internalID: -875090580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: d4
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 371
+        width: 116
+        height: 118
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0337a565d67f2f41a36fe5ab445eaeb
+      internalID: -51923291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: d5
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 371
+        width: 116
+        height: 118
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 19de852071502934383cc04b48940b57
+      internalID: 338059465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: d6
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 371
+        width: 116
+        height: 118
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8eeb8f2d90d7d743ad68f0ef838b234
+      internalID: 1144376878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sheet_3
+      rect:
+        serializedVersion: 2
+        x: 622
+        y: 507
+        width: 154
+        height: 154
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d665488eea3d38429a4dd937863f5a9
+      internalID: 1452485629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: box
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 511
+        width: 148
+        height: 148
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 19, y: 21, z: 22, w: 20}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15461a5b6106e5745a96168e9c1545de
+      internalID: 1697500139
       vertices: []
       indices: 
       edges: []
@@ -437,22 +635,30 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
+      box: 1568857514
       check: 1260438299
+      d1: 1244836978
+      d2: 1148904167
+      d3: -875090580
+      d4: -51923291
+      d5: 338059465
+      d6: 1144376878
       dice: 6530179738444782934
       face: 613435604629981061
       goblin: -1304168633
+      hl: 236231303
       iris: 1257531276
       rock: -423248225
       sheet_0: -740218864
       sheet_1: -243789733
       sheet_2: -3656531271222932061
-      sheet_4: -1308800216
-      sheet_5: -1667498040
-      sheet_6: -1036098198
-      sheet_7: 705870172
+      sheet_3: 1452485629
+      sheet_5: -981937668
+      sheet_6: -666691320
+      sheet_7: 781424228
       slot: -1302611160
       stem: 1549172350
-      tree: -159747199
+      tree: 1007300629
   mipmapLimitGroupName: 
   pSDRemoveMatte: 1
   userData: 
