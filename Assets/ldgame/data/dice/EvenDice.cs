@@ -8,6 +8,7 @@ public class EvenDice : BasicDice
         Define<TagTint>().color = Color.cyan;
         Define<TagAlwaysEven>();
         Define<TagDescription>().loc = $"{TextStuff.Fudge}: Always EVEN.";
+        Define<TagRarity>().rarity = DiceRarity.COMMON;
     }
 }
 

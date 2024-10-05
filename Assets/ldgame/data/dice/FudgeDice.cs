@@ -9,6 +9,7 @@ public class FudgeDice : BasicDice
         Define<TagFudgeDice>().delta = 1;
         Define<TagFudgeDice>().pos = DiceType.FRONT;
         Define<TagDescription>().loc = $"{TextStuff.Fudge}: Adds 1 to the {TextStuff.Front} dice!";
+        Define<TagRarity>().rarity = DiceRarity.COMMON;
     }
 }
 
@@ -34,8 +35,6 @@ public class FudgeDiceInteraction : BaseInteraction, IOnPlay
             var lastDice = G.main.field.ResolvePos(tfl.pos);
             if (lastDice != null)
             {
-                dice.view.Punch();
-                yield return new WaitForSeconds(0.25f);
                 yield return lastDice.SetValue(lastDice.state.rollValue + tfl.delta);
                 lastDice.Punch();
                 yield return new WaitForSeconds(0.25f);

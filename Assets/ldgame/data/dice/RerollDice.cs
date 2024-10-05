@@ -8,6 +8,7 @@ public class RerollDice : BasicDice
         Define<TagTint>().color = new Color(1f, 0f, 1f, 0.5f);
         Define<TagRerollerNext>();
         Define<TagDescription>().loc = $"{TextStuff.Fudge}: Rerolls the last dice.";
+        Define<TagRarity>().rarity = DiceRarity.UNCOMMON;
     }
 }
 
@@ -23,7 +24,7 @@ public class RerollNext : BaseInteraction, IOnPlay
         if (dice.model.Is<TagRerollerNext>())
         {
             var last = G.main.field.LastDice();
-            if (last != null)
+            if (last != null && last != dice.view)
             {
                 dice.view.Punch();
                 yield return new WaitForSeconds(0.25f);

@@ -11,7 +11,9 @@ public class DiceState
     public int rollValue;
     public InteractiveObject view;
     public bool isPlayed;
+    public bool isDead;
     public int Sides => model.Get<TagSides>().sides;
+    public DiceBagState bagState;
 }
 
 public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
@@ -20,7 +22,7 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
     public GameObject shadow;
 
     public Transform scaleRoot;
-    
+
     public DiceState state;
 
     public TMP_Text value;
@@ -69,6 +71,11 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     void Update()
     {
+        if (state != null)
+        {
+            spriteRenderer.flipX = state.isPlayed;
+        }
+
         var sortingGroup = GetComponent<SortingGroup>();
         if (sortingGroup != null)
             sortingGroup.sortingOrder = isMouseOver ? 9999 : order;
@@ -87,11 +94,11 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
     }
 
     bool isMouseOver;
-    
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         isMouseOver = true;
-        
+
         if (scaleRoot)
         {
             scaleRoot.DOKill();
@@ -107,8 +114,10 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
     {
         if (state != null)
         {
-            if (state.model.Is<TagDescription>(out var td))
-                return td.loc;
+            var desc = "";
+            if (state.model.Is<TagRarity>(out var rr)) desc += rr.rarity.RarityToString()+"\n";
+            if (state.model.Is<TagDescription>(out var td)) desc += td.loc;
+            return desc;
         }
 
         return null;
@@ -117,14 +126,14 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
     public void OnPointerExit(PointerEventData eventData)
     {
         isMouseOver = false;
-        
+
         if (scaleRoot)
         {
             scaleRoot.DOKill();
             scaleRoot.DOScale(1f, 0.2f);
         }
-        
-        
+
+
         G.hud.tooltip.Hide();
     }
 }

@@ -8,6 +8,7 @@ public class FrontDice : BasicDice
         Define<TagTint>().color = new Color(.2f, 0.22f, 0.85f, .22f);
         Define<TagForceFront>();
         Define<TagDescription>().loc = $"Is always played in {TextStuff.Front}.";
+        Define<TagRarity>().rarity = DiceRarity.COMMON;
     }
 }
 

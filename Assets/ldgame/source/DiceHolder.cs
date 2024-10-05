@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DiceHolder : MonoBehaviour
@@ -40,6 +41,20 @@ public class DiceHolder : MonoBehaviour
         foreach (var i in inters)
             yield return i.OnGoalDice(arg0.state, this);
 
+        yield return new WaitForSeconds(0.2f);
+
+        if (spec.type == GoalType.SINK)
+            isComplete = accumulatedValue >= spec.goalValue;
+        else
+            isComplete = true;
+
+        if (isComplete)
+        {
+            G.feel.UIPunchSoft();
+            yield return G.main.KillDice(arg0.state);
+        }
+
+        yield return G.main.ClearUpChallenges();
         yield return G.main.CheckForWin();
     }
 
@@ -109,12 +124,11 @@ public class DiceHolder : MonoBehaviour
         }
     }
 
+    bool isComplete;
+
     public bool IsFilled()
     {
-        if (spec.type == GoalType.SINK)
-            return accumulatedValue >= spec.goalValue;
-        
-        return zone.objects.Count >= maxHold;
+        return isComplete;
     }
 }
 

@@ -20,6 +20,12 @@ public class DraggableSmoothDamp : MonoBehaviour, IPointerDownHandler, IPointerU
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        var interactiveObject = GetComponent<InteractiveObject>();
+        if (interactiveObject && interactiveObject.zone && !interactiveObject.zone.canDrag)
+        {
+            return;
+        }
+        
         G.main.StartDrag(this);
         
         isDragging = true;

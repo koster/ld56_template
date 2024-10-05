@@ -8,6 +8,7 @@ public class BlockDice : BasicDice
         Define<TagTint>().color = new Color(.2f, 0.22f, 0.85f, .22f);
         Define<TagBlock>();
         Define<TagDescription>().loc = $"{TextStuff.Block}, subtracts it's value from incoming damage.";
+        Define<TagRarity>().rarity = DiceRarity.RARE;
     }
 }
 

@@ -7,7 +7,20 @@ public abstract class DiceBase : CMSEntity
         Define<TagPrefab>().prefab = "prefab/dice_view".Load<InteractiveObject>();
         Define<TagDescription>().loc = $"Regular dice";
         Define<TagSides>().sides = 6;
+        Define<TagRarity>().rarity = DiceRarity.COMMON;
     }
+}
+
+public enum DiceRarity
+{
+    COMMON,
+    UNCOMMON,
+    RARE
+}
+
+public class TagRarity : EntityComponentDefinition
+{
+    public DiceRarity rarity;
 }
 
 public class BasicDice : DiceBase

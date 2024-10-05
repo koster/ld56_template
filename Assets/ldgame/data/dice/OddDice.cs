@@ -8,6 +8,7 @@ public class OddDice : BasicDice
         Define<TagTint>().color = Color.gray;
         Define<TagAlwaysOdd>();
         Define<TagDescription>().loc = $"{TextStuff.Fudge}: Always ODD.";
+        Define<TagRarity>().rarity = DiceRarity.COMMON;
     }
 }
 

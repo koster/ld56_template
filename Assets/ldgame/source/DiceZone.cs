@@ -1,6 +1,6 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,7 +8,9 @@ public class DiceZone : MonoBehaviour
 {
     public List<InteractiveObject> objects = new List<InteractiveObject>();
     public float spacing = 1f;
+
     public bool isShadow;
+    public bool canDrag;
 
     public UnityAction<InteractiveObject> OnClickDice;
 
@@ -103,9 +105,16 @@ public class DiceZone : MonoBehaviour
                 throw new ArgumentOutOfRangeException(nameof(unknownPos), unknownPos, null);
         }
     }
+
+    public IEnumerator Clear()
+    {
+        var interactiveObjects = new List<InteractiveObject>(objects);
+        foreach (var f in interactiveObjects)
+            yield return G.main.KillDice(f.state);
+    }
 }
 
-public interface IFilterInsertPos 
+public interface IFilterInsertPos
 {
     int OverrideIndex(int dindx, DiceZone diceZone, InteractiveObject toClaim);
 }
