@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ServicedMain : MonoBehaviour
@@ -36,5 +37,10 @@ public class ServicedMain : MonoBehaviour
     void LogCallback(string condition, string stacktrace, LogType type)
     {
         // do failover for coroutines...
+    }
+
+    void OnDestroy()
+    {
+        isInitialized = false;
     }
 }
