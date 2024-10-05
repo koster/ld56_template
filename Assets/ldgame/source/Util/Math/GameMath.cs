@@ -143,6 +143,12 @@ namespace Engine.Math
             return new Vector2(Mathf.Cos(angleRadians), Mathf.Sin(angleRadians));
         }
 
+        public static Vector2 DirectionToMouse2DRaw(Vector2 from, Camera cam = null)
+        {
+            Vector2 mousePosition = MousePos2D(cam);
+            return (mousePosition - from);
+        }
+
         public static Vector2 DirectionToMouse2D(Vector2 from, Camera cam = null)
         {
             Vector2 mousePosition = MousePos2D(cam);
