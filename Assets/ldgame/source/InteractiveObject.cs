@@ -71,7 +71,7 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
     {
         var sortingGroup = GetComponent<SortingGroup>();
         if (sortingGroup != null)
-            sortingGroup.sortingOrder = order;
+            sortingGroup.sortingOrder = isMouseOver ? 9999 : order;
         shadow?.SetActive(zone?.isShadow ?? false);
     }
 
@@ -86,8 +86,12 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
             zone.Release(this);
     }
 
+    bool isMouseOver;
+    
     public void OnPointerEnter(PointerEventData eventData)
     {
+        isMouseOver = true;
+        
         if (scaleRoot)
         {
             scaleRoot.DOKill();
@@ -112,6 +116,8 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        isMouseOver = false;
+        
         if (scaleRoot)
         {
             scaleRoot.DOKill();

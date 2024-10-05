@@ -23,7 +23,7 @@ public class MinValue : BaseInteraction, IRollFilter
         {
             if (roll < ae.val)
             {
-                return ae.val;
+                return ae.val + 1;
             }
         }
 

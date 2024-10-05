@@ -66,6 +66,8 @@ public class Main : MonoBehaviour
             G.run.diceBag.Add(new DiceBagState(E.Id<Min2Dice>()));
             G.run.diceBag.Add(new DiceBagState(E.Id<RerollDice>()));
             G.run.diceBag.Add(new DiceBagState(E.Id<FrontDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<CloneDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<BlockDice>()));
         }
 
         G.main = this;
@@ -275,9 +277,21 @@ public class Main : MonoBehaviour
         SceneManager.LoadScene(GameSettings.MAIN_SCENE);
     }
 
+    public class IntOutput
+    {
+        public int dmg;
+    }
+    
     public IEnumerator DealDamage(int dmg)
     {
-        G.run.health -= dmg;
+        var outputDmg = new IntOutput() { dmg = dmg };
+        var fdmg = interactor.FindAll<IFilterDamage>();
+        var interactiveObjects = new List<InteractiveObject>(field.objects);
+        foreach (var fDice in interactiveObjects)
+            foreach (var f in fdmg)
+                yield return f.ProcessDamage(outputDmg, fDice);
+        
+        G.run.health -= outputDmg.dmg;
         if (G.run.health <= 0)
         {
             G.run.health = 0;
