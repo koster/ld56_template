@@ -42,7 +42,6 @@ public class TagChallengeDefinition : EntityComponentDefinition
     public List<ChallengeGoalDefinition> goals = new List<ChallengeGoalDefinition>();
 }
 
-
 public class TagChallengePenalty : EntityComponentDefinition
 {
     public int damage;

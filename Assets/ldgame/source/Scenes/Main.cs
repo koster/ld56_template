@@ -101,7 +101,9 @@ public class Main : MonoBehaviour
         G.OnGameReady?.Invoke();
 
         if (G.run.level < levelSeq.Count)
+        {
             LoadLevel(CMS.Get<CMSEntity>(levelSeq[G.run.level]));
+        }
         else
             SceneManager.LoadScene("ldgame/end_screen");
 
