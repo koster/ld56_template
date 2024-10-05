@@ -340,6 +340,22 @@ namespace Engine.Math
             return Random.Range(0f, 1f) < d;
         } // Method to check if the given position is on screen
 
+    
+        public static Vector2 MousePositionToRectTransform(this RectTransform rectTransform, Camera uiCamera)
+        {
+            Vector2 localPoint;
+
+            // Convert mouse position to world point relative to the RectTransform's canvas
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                rectTransform, 
+                Input.mousePosition, 
+                uiCamera, 
+                out localPoint
+            );
+
+            return localPoint;
+        }
+        
         public static bool IsOnScreen(Vector3 position)
         {
             Vector3 viewportPoint = Camera.main.WorldToViewportPoint(position);
