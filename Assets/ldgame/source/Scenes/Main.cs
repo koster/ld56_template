@@ -1,17 +1,29 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Main : MonoBehaviour
 {
     public DiceZone hand;
+    public DiceZone field;
 
     void Start()
     {
         G.main = this;
         CMS.Init();
-
-
+        
         G.OnGameReady?.Invoke();
+    }
+
+    public void TryPlayDice(InteractiveObject dice)
+    {
+        StartCoroutine(PlayDice(dice));
+    }
+
+    IEnumerator PlayDice(InteractiveObject dice)
+    {
+        field.Claim(dice);
+        yield break;
     }
 
     public void AddDice()
@@ -23,6 +35,11 @@ public class Main : MonoBehaviour
 
     void Update()
     {
+        G.ui.debug_text.text = "";
+        G.ui.debug_text.text += "R-reload\n";
+        G.ui.debug_text.text += "D-add dice\n";
+        G.ui.debug_text.text += "I-reload with intro\n";
+        
         if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(GameSettings.MAIN_SCENE);
