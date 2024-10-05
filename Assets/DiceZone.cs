@@ -7,6 +7,7 @@ public class DiceZone : MonoBehaviour
 {
     public List<InteractiveObject> objects = new List<InteractiveObject>();
     public float spacing = 1f;
+    public bool isShadow;
 
     public UnityAction<InteractiveObject> OnClickDice;
 

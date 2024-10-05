@@ -14,14 +14,15 @@ public class DiceState
 public class InteractiveObject : MonoBehaviour, IPointerClickHandler
 {
     public SpriteRenderer spriteRenderer;
-    
+    public GameObject shadow;
+
     public DiceState state;
 
     public TMP_Text value;
-    
+
     public MoveableBase moveable;
     public DraggableSmoothDamp draggable;
-    
+
     public DiceZone zone;
 
     void Start()
@@ -37,7 +38,7 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler
         if (state.model.Is<TagTint>(out var tint))
             spriteRenderer.color = tint.color;
     }
-    
+
     public void SetValue(int val)
     {
         state.rollValue = val;
@@ -50,6 +51,11 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler
         {
             zone.OnClickDice?.Invoke(this);
         }
+    }
+
+    void Update()
+    {
+        shadow?.SetActive(zone?.isShadow ?? false);
     }
 
     public void Punch()
