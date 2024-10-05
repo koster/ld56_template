@@ -39,7 +39,7 @@ public class Main : MonoBehaviour
 
     public List<DiceBagState> diceBag;
 
-    List<string> levelSeq = new List<string>() { E.Id<Level1>(), E.Id<Level2>() };
+    List<string> levelSeq = new List<string>() { E.Id<Level1>(), E.Id<Level2>(), E.Id<Level3>() };
 
     void Awake()
     {

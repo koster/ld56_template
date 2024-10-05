@@ -71,7 +71,7 @@ public class DiceZone : MonoBehaviour
 
     public InteractiveObject LastDice()
     {
-        if (objects.Count == 0)
+        if (objects.Count < 1)
             return null;
 
         return objects[1];
