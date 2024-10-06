@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -38,7 +39,7 @@ public class DiceHolder : MonoBehaviour
     IEnumerator ClaimDiceIntoGoal(InteractiveObject arg0)
     {
         G.audio.Play<SFX_Impact>();
-        
+
         zone.Claim(arg0);
         var inters = G.main.interactor.FindAll<IOnPutIntoGoal>();
         foreach (var i in inters)

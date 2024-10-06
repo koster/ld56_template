@@ -1,4 +1,5 @@
 using System.Collections;
+using Engine.Math;
 using UnityEngine;
 
 public class CloneDice : DiceBase
@@ -8,8 +9,10 @@ public class CloneDice : DiceBase
         Define<TagClone>();
         Define<TagDescription>().loc = $"{TextStuff.Clone}. Copies the last rolled dice.";
         Define<TagRarity>().rarity = DiceRarity.RARE;
-        // Define<TagAnimalView>().name = "Hedgehog";
-        // Define<TagAnimalView>().sprite = SpriteUtil.Load("animals", "hedgehog");
+     
+        Define<TagAnimalView>().name = "Monkey";
+        Define<TagAnimalView>().sprite = SpriteUtil.Load("animals", "monkey");
+        Define<TagAnimalView>().color = "#a98d68".ParseColor();
     }
 }
 
