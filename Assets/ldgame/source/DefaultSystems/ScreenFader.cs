@@ -13,7 +13,7 @@ public class ScreenFader : MonoBehaviour
         // Create a new Canvas and configure it
         canvas = new GameObject("ScreenFaderCanvas").AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 9999;
+        canvas.sortingOrder = 9;
 
         // Create the black Image to cover the screen
         fadeImage = new GameObject("FadeImage").AddComponent<Image>();

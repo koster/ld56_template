@@ -120,7 +120,7 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
             sortingGroup.sortingOrder = isMouseOver ? 9999 : order;
 
         if (shadow != null)
-            shadow?.SetActive(zone?.isShadow ?? false);
+            shadow?.SetActive((zone?.isShadow ?? false) || state == null);
     }
 
     public void Punch()
@@ -138,6 +138,8 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (G.drag_dice != null) return;
+        
         isMouseOver = true;
 
         if (scaleRoot)
@@ -146,9 +148,12 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
             scaleRoot.transform.localScale = Vector3.one * 1.25f;
         }
 
-        var desc = TryGetSomethingDesc();
-        if (!string.IsNullOrEmpty(desc))
-            G.hud.tooltip.Show(desc);
+        if (!draggable.isDragging)
+        {
+            var desc = TryGetSomethingDesc();
+            if (!string.IsNullOrEmpty(desc))
+                G.hud.tooltip.Show(desc);
+        }
     }
 
     string TryGetSomethingDesc()
@@ -179,8 +184,7 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
             scaleRoot.DOKill();
             scaleRoot.DOScale(1f, 0.2f);
         }
-
-
+        
         G.hud.tooltip.Hide();
     }
 }

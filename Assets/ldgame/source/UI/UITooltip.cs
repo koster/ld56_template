@@ -27,7 +27,12 @@ public class UITooltip : MonoBehaviour
     void Update()
     {
         if (gameObject.activeSelf)
+        {
+            if(G.drag_dice!=null)
+                Hide();
+            
             _rectTransform.anchoredPosition = G.hud.MousePos();
+        }
 
         _rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Mathf.Lerp(_rectTransform.rect.height, label.textBounds.size.y + 20, 0.5f));
     }

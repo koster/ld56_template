@@ -41,11 +41,6 @@ public class Main : MonoBehaviour
 
     public Sprite sideEmpty;
     public List<Sprite> sides = new List<Sprite>();
-    
-    [FormerlySerializedAs("reward_up")]
-    public TMP_Text RewardUp;
-    [FormerlySerializedAs("reward_dn")]
-    public TMP_Text ReardDn;
 
     public SpriteRenderer PlacementHint;
 
@@ -60,15 +55,25 @@ public class Main : MonoBehaviour
     public List<DiceBagState> discardBag = new List<DiceBagState>();
 
     public CMSEntity levelEntity;
-    List<string> levelSeq = new List<string>() { E.Id<Level0>(), E.Id<Level1>(), E.Id<Level2>(), E.Id<Level3>(), E.Id<Level4>() };
+    List<string> levelSeq = new List<string>()
+    {
+        E.Id<Level0>(), 
+        E.Id<Level1>(),
+        E.Id<Level2>(),
+        E.Id<Level3>(),
+        E.Id<Level4>(),
+        E.Id<Level5>(),
+        E.Id<Level6>(),
+        E.Id<Level7>(),
+        E.Id<Level8>(),
+        E.Id<Level9>(),
+        E.Id<Level10>()
+    };
 
     void Awake()
     {
         interactor = new Interactor();
         interactor.Init();
-
-        RewardUp.enabled = false;
-        ReardDn.enabled = false;
 
         if (G.run == null)
         {
@@ -97,15 +102,6 @@ public class Main : MonoBehaviour
 
     public IEnumerator ShowPicker()
     {
-        // RewardUp.enabled = true;
-        // ReardDn.enabled = true;
-
-        RewardUp.transform.localScale = Vector3.zero;
-        ReardDn.transform.localScale = Vector3.zero;
-
-        // RewardUp.transform.DOScale(1f, 0.5f).SetEase(Ease.OutBack);
-        // ReardDn.transform.DOScale(1f, 0.5f).SetEase(Ease.OutBack);
-
         yield return G.main.Say("More creatures wanted to join the group.");
         yield return G.main.SmartWait(3f);
         G.main.AdjustSay(-1.2f);
@@ -126,9 +122,6 @@ public class Main : MonoBehaviour
             yield return G.main.Say($"{pickedItem.GetNme()} was chosen.");
             yield return G.main.SmartWait(1f);
         }
-
-        RewardUp.transform.DOScale(0f, 0.5f).SetEase(Ease.OutBack);
-        ReardDn.transform.DOScale(0f, 0.5f).SetEase(Ease.OutBack);
     }
 
     public IEnumerator SetupPicker(List<DiceRarity> rarityToSuggest, int maxPick = 1, bool dontClear = false)
@@ -380,6 +373,12 @@ public class Main : MonoBehaviour
             G.run.level = 0;
             SceneManager.LoadScene(GameSettings.MAIN_SCENE);
         }
+        
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            G.run.level++;
+            SceneManager.LoadScene(GameSettings.MAIN_SCENE);
+        }
 
         if (Input.GetKeyDown(KeyCode.I))
         {
@@ -492,15 +491,23 @@ public class Main : MonoBehaviour
         yield return field.Clear();
         yield return hand.Clear();
 
-        yield return ShowPicker();
+        G.run.level++;
+        
+        if (!IsFinal()) yield return ShowPicker();
 
         G.fader.FadeIn();
-        
-        G.run.level++;
 
         yield return new WaitForSeconds(1f);
 
-        SceneManager.LoadScene(GameSettings.MAIN_SCENE);
+        if (!IsFinal())
+            SceneManager.LoadScene(GameSettings.MAIN_SCENE);
+        else
+            SceneManager.LoadScene("ldgame/end_screen");
+    }
+
+    bool IsFinal()
+    {
+        return G.run.level >= levelSeq.Count;
     }
 
     public class IntOutput
