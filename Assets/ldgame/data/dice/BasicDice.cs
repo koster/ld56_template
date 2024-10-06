@@ -7,7 +7,12 @@ public class BasicDice : DiceBase
         Define<TagAnimalView>().name = "Rabbit";
         Define<TagAnimalView>().sprite = SpriteUtil.Load("animals", "rabbit");
         Define<TagAnimalView>().color = Color.white;
+        Define<TagExcludeFromReward>();
     }
+}
+
+public class TagExcludeFromReward : EntityComponentDefinition
+{
 }
 
 public abstract class DiceBase : CMSEntity
