@@ -39,7 +39,7 @@ public class DiceHolder : MonoBehaviour
 
     IEnumerator ClaimDiceIntoGoal(InteractiveObject arg0)
     {
-        owner.transform.DOShakePosition(0.2f, 0.2f);
+        owner.transform.DOShakePosition(0.2f, 0.2f, 50);
         G.audio.Play<SFX_Impact>();
 
         zone.Claim(arg0);

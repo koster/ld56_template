@@ -654,6 +654,7 @@ public class Main : MonoBehaviour
         isWin = true;
 
         G.ui.win.SetActive(true);
+        G.audio.Play<SFX_Win>();
 
         yield return new WaitForSeconds(1.22f);
 
