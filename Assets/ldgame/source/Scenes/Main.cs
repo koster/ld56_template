@@ -111,6 +111,7 @@ public class Main : MonoBehaviour
 
     void OnClickPickerDice(InteractiveObject arg0)
     {
+        G.audio.Play<SFX_Animal>();
         pickedItem = arg0;
     }
 
@@ -250,7 +251,14 @@ public class Main : MonoBehaviour
             }
         }
 
-        yield return field.Clear();
+        foreach (var f in field.objects)
+        {
+            var endTurn = G.main.interactor.FindAll<IOnEndTurnFieldDice>();
+            foreach (var et in endTurn)
+                yield return et.OnEndTurnInField(f.state);
+        }
+
+        yield return field.Clear(soft:true);
         yield return hand.Clear();
 
         yield return DrawDice();
@@ -347,6 +355,8 @@ public class Main : MonoBehaviour
 
     IEnumerator DrawDice()
     {
+        G.audio.Play<SFX_DiceDraw>();
+        
         for (var i = 0; i < G.run.drawSize; i++)
         {
             if (diceBag.Count == 0)
@@ -394,6 +404,9 @@ public class Main : MonoBehaviour
 
                 G.run.level++;
                 SceneManager.LoadScene(GameSettings.MAIN_SCENE);
+
+                while (true)
+                    yield return new WaitForEndOfFrame();
             }
         }
     }
@@ -437,6 +450,8 @@ public class Main : MonoBehaviour
 
     IEnumerator PlayDice(InteractiveObject dice)
     {
+        G.audio.Play<SFX_Animal>();
+        
         dice.state.isPlayed = true;
 
         field.Claim(dice);
@@ -567,6 +582,7 @@ public class Main : MonoBehaviour
     public void StartDrag(DraggableSmoothDamp draggableSmoothDamp)
     {
         G.drag_dice = draggableSmoothDamp.GetComponent<InteractiveObject>();
+        G.audio.Play<SFX_Animal>();
     }
 
     public void StopDrag()
@@ -671,12 +687,13 @@ public class Main : MonoBehaviour
 
     public IEnumerator DealDamage(Vector3 origin, int dmg)
     {
-        // Преобразуем позицию UI-элемента на канвасе в экранные координаты
         Vector3 screenPos = RectTransformUtility.WorldToScreenPoint(null, G.hud.Health.transform.position);
         var pos = Camera.main.ScreenToWorldPoint(screenPos);
         var inst = Instantiate(HitEnergyPf, origin, Quaternion.identity);
         inst.transform.DOMove(pos, 0.5f);
 
+        G.audio.Play<SFX_Woosh>();
+        
         yield return new WaitForSeconds(0.5f);
 
         HitEnergyPf.GetComponent<ParticleSystem>().Stop();
@@ -691,6 +708,7 @@ public class Main : MonoBehaviour
         foreach (var f in fdmg)
             yield return f.ProcessDamage(outputDmg, fDice);
 
+        G.audio.Play<SFX_GetDamage>();
         G.ui.hitLight.DOFade(0.2f, 0.2f).OnComplete(() => { G.ui.hitLight.DOFade(0f, 0.2f); });
 
         G.run.health -= outputDmg.dmg;
@@ -732,6 +750,8 @@ public class Main : MonoBehaviour
         {
             text.text = $"<link={fx}>{TextUtils.CutSmart(actionDefinition, 1 + i)}</link>";
             yield return new WaitForEndOfFrame();
+
+            G.audio.Play<SFX_TypeChar>();
         }
     }
 

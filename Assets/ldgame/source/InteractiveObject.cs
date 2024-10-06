@@ -68,6 +68,8 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     public IEnumerator SetValue(int val)
     {
+        G.audio.Play<SFX_Roll>();
+        
         state.rollValue = val;
 
         if (state.rollValue > state.Sides)

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class DraggableSmoothDamp : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler
@@ -10,7 +11,7 @@ public class DraggableSmoothDamp : MonoBehaviour, IPointerDownHandler, IPointerU
 
     Vector2 origin;
     Vector3 offset;
-
+    
     private void Start()
     {
         isDragging = false;

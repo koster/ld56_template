@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -123,11 +124,20 @@ public class DiceZone : MonoBehaviour
         }
     }
 
-    public IEnumerator Clear()
+    public IEnumerator Clear(bool soft = false)
     {
         var interactiveObjects = new List<InteractiveObject>(objects);
         foreach (var f in interactiveObjects)
-            yield return G.main.KillDice(f.state);
+        {
+            if (soft && f.state.model.Is<TagThriving>())
+            {
+                continue;
+            }
+            else
+            {
+                yield return G.main.KillDice(f.state);
+            }
+        }
     }
 }
 
