@@ -7,6 +7,6 @@ public class SFX_Kill : CMSEntity
     {
         Define<SFXTag>();
         Define<SFXArray>().volume = 0.5f;
-        Define<SFXArray>().files.Add("sfx/ki;;".Load<AudioClip>());
+        Define<SFXArray>().files.Add("sfx/kill".Load<AudioClip>());
     }
 }

@@ -191,8 +191,6 @@ public class Main : MonoBehaviour
         yield return SetupPicker(allRarity, maxPick, dontClear);
     }
 
-    public float ignorePointerEnterCooldown;
-
     bool FitsCriteria(DiceBase m, List<DiceRarity> rarityToSuggest)
     {
         if (m.Is<TagExcludeFromReward>())
@@ -519,8 +517,6 @@ public class Main : MonoBehaviour
 
     void Update()
     {
-        ignorePointerEnterCooldown -= Time.deltaTime;
-
         foreach (var poh in partsOfHudToDisable)
             poh.SetActive(G.hud.gameObject.activeSelf);
 
