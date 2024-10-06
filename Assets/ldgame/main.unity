@@ -2041,7 +2041,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1.59}
+  m_AnchoredPosition: {x: 0, y: 2.19}
   m_SizeDelta: {x: 10.9764, y: 0.5795}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &767714570
@@ -3484,10 +3484,10 @@ RectTransform:
   - {fileID: 1140716120}
   m_Father: {fileID: 198191472}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 425.4392}
-  m_SizeDelta: {x: 160, y: 27.1714}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -114.56079}
+  m_SizeDelta: {x: 160, y: 27.171387}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1171042916
 MonoBehaviour:
@@ -5384,6 +5384,7 @@ MonoBehaviour:
   storage: {fileID: 473915922}
   field: {fileID: 594748149}
   picker: {fileID: 1521055286}
+  sideEmpty: {fileID: 1962573670, guid: 2bf313b95a1dbb04fa080d181aa7e553, type: 3}
   sides:
   - {fileID: 1244836978, guid: bc4ab1fecbef4bc46872e51f8488507d, type: 3}
   - {fileID: 1148904167, guid: bc4ab1fecbef4bc46872e51f8488507d, type: 3}

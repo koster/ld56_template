@@ -1,4 +1,5 @@
 using System.Collections;
+using Engine.Math;
 using UnityEngine;
 
 public class EvenDice : BasicDice
@@ -9,6 +10,10 @@ public class EvenDice : BasicDice
         Define<TagAlwaysEven>();
         Define<TagDescription>().loc = $"{TextStuff.Fudge}: Always EVEN.";
         Define<TagRarity>().rarity = DiceRarity.COMMON;
+        
+        Define<TagAnimalView>().name = "Brown Rabbit";
+        Define<TagAnimalView>().sprite = SpriteUtil.Load("animals", "rabbit");
+        Define<TagAnimalView>().color = "#c47906".ParseColor();
     }
 }
 

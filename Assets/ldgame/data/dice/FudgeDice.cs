@@ -10,6 +10,10 @@ public class FudgeDice : BasicDice
         Define<TagFudgeDice>().pos = DiceType.FRONT;
         Define<TagDescription>().loc = $"{TextStuff.Fudge}: Adds 1 to the {TextStuff.Front} dice!";
         Define<TagRarity>().rarity = DiceRarity.COMMON;
+        
+        Define<TagAnimalView>().name = "Cat";
+        Define<TagAnimalView>().sprite = SpriteUtil.Load("animals", "cat");
+        Define<TagAnimalView>().color = Color.white;
     }
 }
 

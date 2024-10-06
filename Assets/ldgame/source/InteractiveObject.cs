@@ -19,6 +19,12 @@ public class DiceState
 public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public SpriteRenderer spriteRenderer;
+    public GameObject side;
+    public SpriteRenderer spriteRendererSide;
+    public SpriteRenderer spriteRendererFace;
+
+    public Transform spinRoot;
+    
     public GameObject shadow;
 
     public Transform scaleRoot;
@@ -49,6 +55,13 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
 
         if (state.model.Is<TagTint>(out var tint))
             spriteRenderer.color = tint.color;
+
+        if (state.model.Is<TagAnimalView>(out var av))
+        {
+            spriteRenderer.color = av.color;
+            spriteRendererSide.color = av.color;
+            spriteRendererFace.sprite = av.sprite;
+        }
     }
 
     public IEnumerator SetValue(int val)
@@ -64,11 +77,11 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
             Punch();
             G.feel.UIPunchSoft();
             yield return new WaitForSeconds(0.25f);
-            
+
             state.rollValue = 1;
         }
         
-        value.text = state.rollValue.ToString();
+        value.text = "";//state.rollValue.ToString();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -81,13 +94,27 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     void Update()
     {
+        if (side != null)
+        {
+            side.SetActive(true);
+            spriteRendererSide.sprite = G.main.sideEmpty;
+        }
+
         if (state != null)
+        {
+            if (state.isPlayed && state.rollValue > 0 && state.rollValue <= state.Sides)
+            {
+                side.SetActive(true);
+                spriteRendererSide.sprite = G.main.sides[state.rollValue - 1];
+            }
+
             spriteRenderer.flipX = state.isPlayed;
+        }
 
         if (sortingGroup != null)
             sortingGroup.sortingOrder = isMouseOver ? 9999 : order;
-        
-        if (shadow!=null)
+
+        if (shadow != null)
             shadow?.SetActive(zone?.isShadow ?? false);
     }
 
@@ -123,13 +150,19 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
     {
         if (state != null)
         {
-            var desc = "A Tiny Creature\n\n";
+            var desc = $"{GetNme()}\n\n";
             if (state.model.Is<TagRarity>(out var rr)) desc += rr.rarity.RarityToString()+"\n";
             if (state.model.Is<TagDescription>(out var td)) desc += td.loc;
             return desc;
         }
 
         return null;
+    }
+
+    string GetNme()
+    {
+        if (state.model.Is<TagAnimalView>(out var av)) return av.name;
+        return "A Tiny Creature";
     }
 
     public void OnPointerExit(PointerEventData eventData)

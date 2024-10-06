@@ -124,6 +124,13 @@ namespace Engine.Math
             return new Color(c.r, c.g, c.b, alpha);
         }
 
+        public static Color ParseColor(this string str)
+        {
+            if (ColorUtility.TryParseHtmlString(str, out var clr))
+                return clr;
+            return UnityEngine.Color.magenta;
+        }
+
         public static string Color(this string str, Color c)
         {
             return str.Color("#" + ColorUtility.ToHtmlStringRGBA(c));

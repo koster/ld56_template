@@ -5,10 +5,13 @@ public class OddDice : BasicDice
 {
     public OddDice()
     {
-        Define<TagTint>().color = Color.gray;
         Define<TagAlwaysOdd>();
         Define<TagDescription>().loc = $"{TextStuff.Fudge}: Always ODD.";
         Define<TagRarity>().rarity = DiceRarity.COMMON;
+        
+        Define<TagAnimalView>().name = "Grey Rabbit";
+        Define<TagAnimalView>().sprite = SpriteUtil.Load("animals", "rabbit");
+        Define<TagAnimalView>().color = Color.grey;
     }
 }
 

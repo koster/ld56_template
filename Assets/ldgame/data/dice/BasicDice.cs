@@ -1,5 +1,15 @@
 using UnityEngine;
 
+public class BasicDice : DiceBase
+{
+    public BasicDice()
+    {
+        Define<TagAnimalView>().name = "Rabbit";
+        Define<TagAnimalView>().sprite = SpriteUtil.Load("animals", "rabbit");
+        Define<TagAnimalView>().color = Color.white;
+    }
+}
+
 public abstract class DiceBase : CMSEntity
 {
     public DiceBase()
@@ -9,6 +19,13 @@ public abstract class DiceBase : CMSEntity
         Define<TagSides>().sides = 6;
         Define<TagRarity>().rarity = DiceRarity.COMMON;
     }
+}
+
+public class TagAnimalView : EntityComponentDefinition
+{
+    public string name;
+    public Sprite sprite;
+    public Color color;
 }
 
 public enum DiceRarity
@@ -21,13 +38,6 @@ public enum DiceRarity
 public class TagRarity : EntityComponentDefinition
 {
     public DiceRarity rarity;
-}
-
-public class BasicDice : DiceBase
-{
-    public BasicDice()
-    {
-    }
 }
 
 public class TagSides : EntityComponentDefinition

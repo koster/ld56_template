@@ -1,4 +1,5 @@
 using System.Collections;
+using Engine.Math;
 using UnityEngine;
 
 public class RerollDice : BasicDice
@@ -9,6 +10,10 @@ public class RerollDice : BasicDice
         Define<TagRerollerNext>();
         Define<TagDescription>().loc = $"{TextStuff.Fudge}: Rerolls the last dice.";
         Define<TagRarity>().rarity = DiceRarity.UNCOMMON;
+        
+        Define<TagAnimalView>().name = "Frog";
+        Define<TagAnimalView>().sprite = SpriteUtil.Load("animals", "frog");
+        Define<TagAnimalView>().color = "#b9d161".ParseColor();
     }
 }
 

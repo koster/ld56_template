@@ -34,6 +34,7 @@ public class Main : MonoBehaviour
     public DiceZone field;
     public DiceZone picker;
 
+    public Sprite sideEmpty;
     public List<Sprite> sides = new List<Sprite>();
     
     [FormerlySerializedAs("reward_up")]

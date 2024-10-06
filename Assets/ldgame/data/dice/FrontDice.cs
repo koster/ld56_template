@@ -1,4 +1,5 @@
 using System.Collections;
+using Engine.Math;
 using UnityEngine;
 
 public class FrontDice : BasicDice
@@ -9,6 +10,10 @@ public class FrontDice : BasicDice
         Define<TagForceFront>();
         Define<TagDescription>().loc = $"Is always played in {TextStuff.Front}.";
         Define<TagRarity>().rarity = DiceRarity.COMMON;
+        
+        Define<TagAnimalView>().name = "Ram";
+        Define<TagAnimalView>().sprite = SpriteUtil.Load("animals", "ram");
+        Define<TagAnimalView>().color = "#c6ae92".ParseColor();
     }
 }
 

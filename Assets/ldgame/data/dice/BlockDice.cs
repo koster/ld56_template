@@ -9,6 +9,9 @@ public class BlockDice : BasicDice
         Define<TagBlock>();
         Define<TagDescription>().loc = $"{TextStuff.Block}, subtracts it's value from incoming damage.";
         Define<TagRarity>().rarity = DiceRarity.RARE;
+        
+        Define<TagAnimalView>().name = "Hedgehog";
+        Define<TagAnimalView>().sprite = SpriteUtil.Load("animals", "hedgehog");
     }
 }
 

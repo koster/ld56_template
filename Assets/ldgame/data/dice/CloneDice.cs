@@ -5,10 +5,11 @@ public class CloneDice : BasicDice
 {
     public CloneDice()
     {
-        Define<TagTint>().color = new Color(.2f, 1f, 0.85f, .22f);
         Define<TagClone>();
         Define<TagDescription>().loc = $"{TextStuff.Clone}. Copies the last rolled dice.";
         Define<TagRarity>().rarity = DiceRarity.RARE;
+        // Define<TagAnimalView>().name = "Hedgehog";
+        // Define<TagAnimalView>().sprite = SpriteUtil.Load("animals", "hedgehog");
     }
 }
 
