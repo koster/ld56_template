@@ -303,9 +303,11 @@ public class Main : MonoBehaviour
             
             yield return G.ui.tutorial.WaitForSkip();
 
+            G.main.hand.canDrag = true;
             while (field.objects.Count == 0)
                 yield return new WaitForEndOfFrame();
-
+            G.main.hand.canDrag = false;
+            
             G.ui.tutorial.SetTutorialText("Drag the creature into the CHALLENGE SLOT to play it.", -400);
             G.ui.tutorial.Show(G.ui.tutorial_goals);
             
@@ -336,6 +338,8 @@ public class Main : MonoBehaviour
             
             G.ui.tutorial.SetTutorialText("Stored dice are persisted in between encounters.");
             G.ui.tutorial.Show(G.ui.tutorial_storage);
+            
+            yield return G.ui.tutorial.WaitForSkip();
 
             // PlayerPrefs.SetInt("tutorial2", 1);
         }

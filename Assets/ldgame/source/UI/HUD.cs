@@ -61,11 +61,13 @@ public class HUD : MonoBehaviour
 
     public void DisableHud()
     {
+        G.main.hand.canDrag = false;
         EndTurn.interactable = false;
     }
 
     public void EnableHud()
     {
+        G.main.hand.canDrag = true;
         EndTurn.interactable = true;
     }
 
