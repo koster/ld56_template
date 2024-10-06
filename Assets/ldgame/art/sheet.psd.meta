@@ -142,10 +142,10 @@ TextureImporter:
       name: sheet_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 2048
-        height: 2048
+        x: 1301
+        y: 475
+        width: 185
+        height: 250
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -164,7 +164,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: b74867fd485a77b4aa3ecf90c063956d
     internalID: 0
     vertices: []
     indices: 
@@ -176,7 +176,7 @@ TextureImporter:
     nameFileIdTable:
       sheet_0: 6530179738444782934
   mipmapLimitGroupName: 
-  pSDRemoveMatte: 0
+  pSDRemoveMatte: 1
   userData: 
   assetBundleName: 
   assetBundleVariant: 
