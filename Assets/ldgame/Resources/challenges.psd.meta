@@ -191,7 +191,7 @@ TextureImporter:
         width: 415
         height: 418
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -200,6 +200,28 @@ TextureImporter:
       bones: []
       spriteID: 67b1034ac11e2a44cb0a37c14ebbcff2
       internalID: -742844694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: challenges_3
+      rect:
+        serializedVersion: 2
+        x: 369
+        y: 1213
+        width: 247
+        height: 177
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72cb4f1b0d1c0f14a925d3e72b3668c3
+      internalID: 987346691
       vertices: []
       indices: 
       edges: []
@@ -221,6 +243,7 @@ TextureImporter:
       challenges_0: 1564456064613580045
       challenges_1: -2044215598
       challenges_2: -742844694
+      challenges_3: 987346691
   mipmapLimitGroupName: 
   pSDRemoveMatte: 1
   userData: 

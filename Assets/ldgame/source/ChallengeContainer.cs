@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -6,6 +7,12 @@ public class ChallengeContainer : MonoBehaviour, IPointerEnterHandler, IPointerE
 {
     public CMSEntity model;
     public List<DiceHolder> slots = new List<DiceHolder>();
+
+    void Start()
+    {
+        foreach (var s in slots)
+            s.owner = this;
+    }
 
     public bool IsComplete()
     {

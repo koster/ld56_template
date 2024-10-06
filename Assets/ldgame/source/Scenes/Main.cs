@@ -117,6 +117,8 @@ public class Main : MonoBehaviour
 
     public IEnumerator ShowPicker()
     {
+        G.audio.Play<SFX_Magic>();
+        
         yield return G.main.Say("More creatures wanted to join the group.");
         yield return G.main.SmartWait(3f);
         G.main.AdjustSay(-1.2f);

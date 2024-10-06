@@ -18,6 +18,7 @@ public class DiceHolder : MonoBehaviour
     public int accumulatedValue;
 
     public SpriteRenderer checkmark;
+    public ChallengeContainer owner;
     
     DiceZone zone;
 
@@ -38,6 +39,7 @@ public class DiceHolder : MonoBehaviour
 
     IEnumerator ClaimDiceIntoGoal(InteractiveObject arg0)
     {
+        owner.transform.DOShakePosition(0.2f, 0.2f);
         G.audio.Play<SFX_Impact>();
 
         zone.Claim(arg0);
@@ -120,10 +122,10 @@ public class DiceHolder : MonoBehaviour
                 target.text = "";
                 break;
             case GoalType.GREATER_THAN:
-                target.text = ">"+spec.goalValue.ToString();
+                target.text = "> "+spec.goalValue.ToString();
                 break;
             case GoalType.LESS_THAN:
-                target.text = "<"+spec.goalValue.ToString();
+                target.text = "< "+spec.goalValue.ToString();
                 break;
             case GoalType.EVEN:
                 target.text = "EVEN";
@@ -169,6 +171,7 @@ public static class GoalMatcher
         if (!obj.state.isPlayed) return false;
         if (obj.state.model.Is<TagWildcard>()) return true;
         
+        Debug.Log(goal.type);
         switch (goal.type)
         {
             case GoalType.NONE: return true;
