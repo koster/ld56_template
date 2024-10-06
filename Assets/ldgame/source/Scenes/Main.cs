@@ -25,6 +25,7 @@ public class RunState
 {
     public int level;
     public List<DiceBagState> diceBag = new List<DiceBagState>();
+    public List<DiceState> diceStorage = new List<DiceState>();
     public int drawSize = 3;
     public int health = 10;
     public int maxHealth = 10;
@@ -169,6 +170,7 @@ public class Main : MonoBehaviour
                 yield return G.main.Say($"No Energy restored.");
             else
                 yield return G.main.Say($"{G.main.pickedItem.GetEnergyValue()} Energy restored.");
+            
             G.run.health += G.main.pickedItem.GetEnergyValue();
             if (G.run.health > G.run.maxHealth) G.run.health = G.run.maxHealth;
 
@@ -272,13 +274,71 @@ public class Main : MonoBehaviour
         else
             SceneManager.LoadScene("ldgame/end_screen");
 
-        diceBag = new List<DiceBagState>(G.run.diceBag);
-        diceBag.Shuffle();
+        diceBag = new List<DiceBagState>();
 
+        foreach(var d in G.run.diceBag)
+        {
+            var isNotStored = G.run.diceStorage.Find(m => m.model.id == d.id) == null;
+            if (isNotStored) diceBag.Add(d);
+        }
+        
+        diceBag.Shuffle();
+        
         yield return DrawDice();
 
         G.ui.EnableInput();
         G.hud.EnableHud();
+
+        if (G.run.level == 1 && PlayerPrefs.GetInt("tutorial1", 0) == 0)
+        {
+            G.hud.DisableHud();
+            
+            G.ui.tutorial.SetTutorialText("These are the creatures in your HAND.");
+            G.ui.tutorial.Show(G.ui.tutorial_hand);
+            
+            yield return G.ui.tutorial.WaitForSkip();
+            
+            G.ui.tutorial.SetTutorialText("Drag them on to the field to play them.", 400);
+            G.ui.tutorial.Show(G.ui.tutorial_field);
+            
+            yield return G.ui.tutorial.WaitForSkip();
+
+            while (field.objects.Count == 0)
+                yield return new WaitForEndOfFrame();
+
+            G.ui.tutorial.SetTutorialText("Drag the creature into the CHALLENGE SLOT to play it.", -400);
+            G.ui.tutorial.Show(G.ui.tutorial_goals);
+            
+            yield return G.ui.tutorial.WaitForSkip();
+            
+            G.ui.tutorial.SetTutorialText("Hit end turn when you're done.", 0);
+            G.ui.tutorial.Show(G.ui.tutorial_end_turn);
+            
+            yield return G.ui.tutorial.WaitForSkip();
+
+            yield return new WaitForSeconds(0.5f);
+
+            // PlayerPrefs.SetInt("tutorial1", 1);
+            G.hud.EnableHud();
+        }
+        
+        if (G.run.level == 2 && PlayerPrefs.GetInt("tutorial2", 0) == 0)
+        {
+            G.ui.tutorial.SetTutorialText("You can store played dice in the STORAGE.");
+            G.ui.tutorial.Show(G.ui.tutorial_storage);
+            
+            yield return G.ui.tutorial.WaitForSkip();
+            
+            G.ui.tutorial.SetTutorialText("Drag them from the field once they've been played.", 400);
+            G.ui.tutorial.Show(G.ui.tutorial_field);
+            
+            yield return G.ui.tutorial.WaitForSkip();
+            
+            G.ui.tutorial.SetTutorialText("Stored dice are persisted in between encounters.");
+            G.ui.tutorial.Show(G.ui.tutorial_storage);
+
+            // PlayerPrefs.SetInt("tutorial2", 1);
+        }
     }
 
     IEnumerator DrawDice()

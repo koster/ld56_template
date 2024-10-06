@@ -53,5 +53,8 @@ TagManager:
   - name: HUD
     uniqueID: 840682143
     locked: 0
+  - name: MASK
+    uniqueID: 543100513
+    locked: 0
   m_RenderingLayers:
   - Default

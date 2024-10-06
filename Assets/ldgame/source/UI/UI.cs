@@ -11,13 +11,22 @@ public class UI : MonoBehaviour
     public GameObject win;
     public GameObject defeat;
 
+    public TutorialMask tutorial;
+    
     public Image hitLight;
 
     public GameObject disableInput;
+    
+    public RectTransform tutorial_hand;
+    public RectTransform tutorial_field;
+    public RectTransform tutorial_goals;
+    public RectTransform tutorial_end_turn;
+    public RectTransform tutorial_storage;
 
     void Awake()
     {
         G.ui = this;
+        tutorial.Hide();
     }
 
     void Start()
