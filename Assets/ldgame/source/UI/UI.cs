@@ -71,11 +71,13 @@ public class UI : MonoBehaviour
 
     public void DisableInput()
     {
+        Debug.Log("DisableInput");
         disableInput.SetActive(true);
     }
     
     public void EnableInput()
     {
+        Debug.Log("EnableInput");
         disableInput.SetActive(false);
     }
 }

@@ -95,11 +95,10 @@ public class Main : MonoBehaviour
             G.run.maxHealth = 15;
             G.run.health = G.run.maxHealth;
 
-            G.run.diceBag.Add(new DiceBagState(E.Id<PlusOneGrowDice>()));
-            // G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
-            // G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
-            // G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
-            // G.run.diceBag.Add(new DiceBagState(E.Id<FudgeDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<FudgeDice>()));
         }
 
         picker.OnClickDice += OnClickPickerDice;
@@ -111,6 +110,7 @@ public class Main : MonoBehaviour
 
     void OnClickPickerDice(InteractiveObject arg0)
     {
+        G.ui.DisableInput();
         G.audio.Play<SFX_Animal>();
         pickedItem = arg0;
     }
@@ -132,7 +132,7 @@ public class Main : MonoBehaviour
         if (levelEntity.Is<TagHard>())
         {
             G.main.AdjustSay(0f);
-            yield return G.main.Say("Even more, RARER cretures desired to join.");
+            yield return G.main.Say("Even more, RARER creatures desired to join.");
             yield return G.main.SmartWait(3f);
 
             G.main.AdjustSay(-1.2f);
@@ -224,11 +224,16 @@ public class Main : MonoBehaviour
             while (pickedItem == null) yield return new WaitForEndOfFrame();
 
             if (addToBag) hand.Claim(pickedItem);
+
+            if (maxPick > 0)
+                G.ui.EnableInput();
         }
 
         if (!dontClear) yield return picker.Clear();
 
         if (addToBag) G.run.diceBag.Add(new DiceBagState(pickedItem.state.model.id));
+        
+        G.ui.EnableInput();
     }
 
     public void EndTurn()
