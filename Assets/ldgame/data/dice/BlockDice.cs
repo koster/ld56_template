@@ -25,6 +25,7 @@ public class BlockDiceInteraction : BaseInteraction, IFilterDamage
     {
         if (dice.state.model.Is<TagBlock>(out var tag))
         {
+            Debug.Log("subtract " + dmgIncoming.dmg);
             if (dmgIncoming.dmg >= dice.state.rollValue)
             {
                 dmgIncoming.dmg -= dice.state.rollValue;
@@ -32,8 +33,8 @@ public class BlockDiceInteraction : BaseInteraction, IFilterDamage
             }
             else
             {
-                dmgIncoming.dmg = 0;
                 yield return dice.state.view.SetValue(dice.state.rollValue - dmgIncoming.dmg);
+                dmgIncoming.dmg = 0;
             }
         }
     }

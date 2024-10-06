@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -26,6 +28,14 @@ public class RunState
     public int drawSize = 3;
     public int health = 10;
     public int maxHealth = 10;
+
+    public bool HasDice(string mID)
+    {
+        foreach (var db in diceBag)
+            if (db.id == mID)
+                return true;
+        return false;
+    }
 }
 
 public class Main : MonoBehaviour
@@ -36,7 +46,7 @@ public class Main : MonoBehaviour
     public DiceZone picker;
 
     public List<GameObject> partsOfHudToDisable;
-    
+
     public TMP_Text say_text;
     public TMP_Text say_text_shadow;
 
@@ -44,6 +54,8 @@ public class Main : MonoBehaviour
     public List<Sprite> sides = new List<Sprite>();
 
     public SpriteRenderer PlacementHint;
+
+    public Transform HitEnergyPf;
 
     public Interactor interactor;
 
@@ -58,7 +70,7 @@ public class Main : MonoBehaviour
     public CMSEntity levelEntity;
     List<string> levelSeq = new List<string>()
     {
-        E.Id<Level0>(), 
+        E.Id<Level0>(),
         E.Id<Level1>(),
         E.Id<Level2>(),
         E.Id<Level3>(),
@@ -107,48 +119,48 @@ public class Main : MonoBehaviour
         yield return G.main.SmartWait(3f);
         G.main.AdjustSay(-1.2f);
         yield return G.main.Say("But they could only take ONE.");
-        
+
         yield return SetupPicker(new List<DiceRarity>() { DiceRarity.COMMON, DiceRarity.UNCOMMON });
 
         yield return G.main.Say($"{pickedItem.GetNme()} was chosen.");
         yield return G.main.SmartWait(1f);
-        
+
         if (levelEntity.Is<TagHard>())
         {
             G.main.AdjustSay(0f);
             yield return G.main.Say("Even more, RARER cretures desired to join.");
             yield return G.main.SmartWait(3f);
-            
+
             G.main.AdjustSay(-1.2f);
             yield return G.main.Say("But still, they could only take ONE.");
             yield return SetupPicker(new List<DiceRarity> { DiceRarity.RARE });
 
             yield return G.main.Say($"{pickedItem.GetNme()} was chosen.");
             yield return G.main.SmartWait(1f);
-            
+
             G.main.AdjustSay(0f);
-            
+
             yield return G.main.Say($"The creatures were starving...");
             yield return G.main.SmartWait(3f);
-            
+
             yield return G.main.Say($"One of them had to be let go.");
             yield return G.main.SmartWait(3f);
-            
+
             G.main.AdjustSay(-1.2f);
             yield return G.main.Say($"Choose wisely.");
 
             G.main.showEnergyValue = true;
-            
+
             var allDice = G.run.diceBag.ConvertAll(m => CMS.Get<DiceBase>(m.id)).ToList();
             yield return G.main.SetupPicker(allDice, showAmount: allDice.Count, addToBag: false);
 
             var pickedId = G.main.pickedItem.state.model.id;
-            
+
             yield return G.main.picker.Clear();
             G.main.picker.Claim(CreateDice(pickedId));
-            
+
             G.main.showEnergyValue = false;
-            
+
             G.run.diceBag.Remove(G.run.diceBag.Find(m => m.id == pickedId));
             yield return G.main.Say($"{G.main.pickedItem.GetNme()} was left behind.");
             yield return G.main.SmartWait(3f);
@@ -157,6 +169,9 @@ public class Main : MonoBehaviour
                 yield return G.main.Say($"No Energy restored.");
             else
                 yield return G.main.Say($"{G.main.pickedItem.GetEnergyValue()} Energy restored.");
+            G.run.health += G.main.pickedItem.GetEnergyValue();
+            if (G.run.health > G.run.maxHealth) G.run.health = G.run.maxHealth;
+
             yield return G.main.SmartWait(3f);
         }
     }
@@ -165,12 +180,25 @@ public class Main : MonoBehaviour
     {
         var allDice = CMS.GetAll<DiceBase>();
 
-        var allRarity = allDice.FindAll(m => rarityToSuggest.Contains(m.Get<TagRarity>().rarity) && !m.Is<TagExcludeFromReward>());
+        var allRarity = allDice.FindAll(m => FitsCriteria(m, rarityToSuggest));
         allRarity.Shuffle();
 
         yield return SetupPicker(allRarity, maxPick, dontClear);
     }
-    
+
+    public float ignorePointerEnterCooldown;
+
+    bool FitsCriteria(DiceBase m, List<DiceRarity> rarityToSuggest)
+    {
+        if (m.Is<TagExcludeFromReward>())
+            return false;
+
+        if (m.Is<TagCanOnlyHave1>() && G.run.HasDice(m.id))
+            return false;
+
+        return rarityToSuggest.Contains(m.Get<TagRarity>().rarity);
+    }
+
     public IEnumerator SetupPicker(List<DiceBase> dice, int maxPick = 1, bool dontClear = false, bool addToBag = true, int showAmount = 3)
     {
         yield return picker.Clear();
@@ -179,6 +207,11 @@ public class Main : MonoBehaviour
             picker.Claim(CreateDice(dice[i].id));
 
         yield return new WaitForSeconds(0.1f);
+
+        if (showAmount > 3)
+            picker.spacing = 0.8f;
+        else
+            picker.spacing = 2f;
 
         for (var i = 0; i < maxPick; i++)
         {
@@ -201,8 +234,6 @@ public class Main : MonoBehaviour
     IEnumerator EndTurnCoroutine()
     {
         G.hud.DisableHud();
-        
-        yield return field.Clear();
 
         var obstacles = interactor.FindAll<IOnEndTurnObstacle>();
 
@@ -217,22 +248,25 @@ public class Main : MonoBehaviour
             }
         }
 
+        yield return field.Clear();
+        yield return hand.Clear();
+
         yield return DrawDice();
-        
+
         G.hud.EnableHud();
     }
 
     IEnumerator Start()
     {
         CMS.Init();
-        
+
         G.hud.DisableHud();
         G.ui.DisableInput();
 
         G.OnGameReady?.Invoke();
 
         G.fader.FadeOut();
-        
+
         if (G.run.level < levelSeq.Count)
             yield return LoadLevel(CMS.Get<CMSEntity>(levelSeq[G.run.level]));
         else
@@ -242,7 +276,7 @@ public class Main : MonoBehaviour
         diceBag.Shuffle();
 
         yield return DrawDice();
-        
+
         G.ui.EnableInput();
         G.hud.EnableHud();
     }
@@ -314,11 +348,11 @@ public class Main : MonoBehaviour
             if (preferSlot == -1) preferSlot = challengesActiveCount;
 
             var ct = challenge.transform;
-            
+
             ct.position = challengeSlots[preferSlot].position;
 
             challenge.moveable.enabled = false;
-            
+
             var offset = Vector3.up * 5;
             ct.position += offset;
             var ls = ct.localScale;
@@ -346,6 +380,12 @@ public class Main : MonoBehaviour
         yield return new WaitForSeconds(0.25f);
 
         yield return Roll(dice);
+
+        if (hand.objects.Count == 0)
+        {
+            yield return new WaitForSeconds(0.25f);
+            G.hud.PunchEndTurn();
+        }
     }
 
     public IEnumerator Roll(InteractiveObject dice)
@@ -374,6 +414,7 @@ public class Main : MonoBehaviour
     public DiceState AddDice(string t)
     {
         var instance = CreateDice(t);
+        instance.moveable.targetPosition = instance.transform.position = Vector3.left * 7f;
         hand.Claim(instance);
         return instance.state;
     }
@@ -395,14 +436,16 @@ public class Main : MonoBehaviour
 
     void Update()
     {
+        ignorePointerEnterCooldown -= Time.deltaTime;
+
         foreach (var poh in partsOfHudToDisable)
             poh.SetActive(G.hud.gameObject.activeSelf);
-        
+
         if (Input.GetMouseButtonDown(0))
         {
             skip = true;
         }
-        
+
         PlacementHintLogic();
 
         G.ui.debug_text.text = "";
@@ -415,12 +458,12 @@ public class Main : MonoBehaviour
             G.run.level = 0;
             SceneManager.LoadScene(GameSettings.MAIN_SCENE);
         }
-        
+
         if (Input.GetKeyDown(KeyCode.W))
         {
             StartCoroutine(WinSequence());
         }
-        
+
         if (Input.GetKeyDown(KeyCode.N))
         {
             G.run.level++;
@@ -523,11 +566,11 @@ public class Main : MonoBehaviour
             Debug.Log("<color=red>double trigger win sequence lol</color>");
             yield break;
         }
-        
+
         G.hud.DisableHud();
 
         isWin = true;
-        
+
         G.ui.win.SetActive(true);
 
         yield return new WaitForSeconds(1.22f);
@@ -539,7 +582,7 @@ public class Main : MonoBehaviour
         yield return hand.Clear();
 
         G.run.level++;
-        
+
         if (!IsFinal()) yield return ShowPicker();
 
         G.fader.FadeIn();
@@ -562,10 +605,21 @@ public class Main : MonoBehaviour
         public int dmg;
     }
 
-    public IEnumerator DealDamage(int dmg)
+    public IEnumerator DealDamage(Vector3 origin, int dmg)
     {
+        // Преобразуем позицию UI-элемента на канвасе в экранные координаты
+        Vector3 screenPos = RectTransformUtility.WorldToScreenPoint(null, G.hud.Health.transform.position);
+        var pos = Camera.main.ScreenToWorldPoint(screenPos);
+        var inst = Instantiate(HitEnergyPf, origin, Quaternion.identity);
+        inst.transform.DOMove(pos, 0.5f);
+
+        yield return new WaitForSeconds(0.5f);
+
+        HitEnergyPf.GetComponent<ParticleSystem>().Stop();
+        HitEnergyPf.AddComponent<Lifetime>();
+
         G.ui.Punch(G.hud.Health.transform);
-        
+
         var outputDmg = new IntOutput() { dmg = dmg };
         var fdmg = interactor.FindAll<IFilterDamage>();
         var interactiveObjects = new List<InteractiveObject>(field.objects);
@@ -573,7 +627,10 @@ public class Main : MonoBehaviour
         foreach (var f in fdmg)
             yield return f.ProcessDamage(outputDmg, fDice);
 
+        G.ui.hitLight.DOFade(0.2f, 0.2f).OnComplete(() => { G.ui.hitLight.DOFade(0f, 0.2f); });
+
         G.run.health -= outputDmg.dmg;
+
         if (G.run.health <= 0)
         {
             G.run.health = 0;
@@ -601,12 +658,12 @@ public class Main : MonoBehaviour
         StartCoroutine(Print(say_text, text));
         yield return Print(say_text_shadow, text);
     }
-    
+
     public static IEnumerator Print(TMP_Text text, string actionDefinition, string fx = "wave")
     {
         var visibleLength = TextUtils.GetVisibleLength(actionDefinition);
         if (visibleLength == 0) yield break;
-        
+
         for (var i = 0; i < visibleLength; i++)
         {
             text.text = $"<link={fx}>{TextUtils.CutSmart(actionDefinition, 1 + i)}</link>";
@@ -654,7 +711,20 @@ public class Main : MonoBehaviour
 
     public void AdjustSay(float i)
     {
-        say_text.transform.DOMoveY(i,0.25f);
+        say_text.transform.DOMoveY(i, 0.25f);
+    }
+}
+
+public class Lifetime : MonoBehaviour
+{
+    public float ttl = 5f;
+
+    void Update()
+    {
+        ttl -= Time.deltaTime;
+
+        if (ttl < 0)
+            Destroy(gameObject);
     }
 }
 
@@ -677,7 +747,7 @@ public class DealDamagePenalty : BaseInteraction, IOnEndTurnObstacle
             if (penalty.damage > 0)
             {
                 obstacle.GetComponent<InteractiveObject>().Punch();
-                yield return G.main.DealDamage(penalty.damage);
+                yield return G.main.DealDamage(obstacle.transform.position, penalty.damage);
             }
         }
     }

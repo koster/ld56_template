@@ -15,6 +15,7 @@ public static class G
     public static RunState run;
 
     public static InteractiveObject drag_dice;
+    public static InteractiveObject hover_dice;
     
     public static bool IsPaused;
 

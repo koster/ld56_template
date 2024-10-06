@@ -94,4 +94,9 @@ public class HUD : MonoBehaviour
     {
         return MousePositionToCanvasPosition(G.hud.GetComponent<Canvas>(), G.hud.GetComponent<RectTransform>());
     }
+
+    public void PunchEndTurn()
+    {
+        G.ui.Punch(EndTurn.transform);
+    }
 }

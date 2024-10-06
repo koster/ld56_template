@@ -19,7 +19,7 @@ public class ScreenFader : MonoBehaviour
         fadeImage = new GameObject("FadeImage").AddComponent<Image>();
         fadeImage.transform.SetParent(canvas.transform, false);
         fadeImage.rectTransform.anchoredPosition = Vector2.zero;
-        fadeImage.rectTransform.sizeDelta = new Vector2(Screen.width, Screen.height);
+        fadeImage.rectTransform.sizeDelta = new Vector2(5000, 3000);
 
         // Set the Image color to black and make it transparent initially
         fadeImage.color = new Color(0f, 0f, 0f, 1f);

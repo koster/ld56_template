@@ -2,6 +2,7 @@ using System.Collections;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class UI : MonoBehaviour
     public UIPauseMenu pause;
     public GameObject win;
     public GameObject defeat;
+
+    public Image hitLight;
 
     public GameObject disableInput;
 

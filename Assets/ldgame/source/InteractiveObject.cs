@@ -140,12 +140,14 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (G.hover_dice != null) return;
         if (G.drag_dice != null) return;
         
         isMouseOver = true;
-
+        
         if (scaleRoot)
         {
+            G.hover_dice = this;
             scaleRoot.DOKill();
             scaleRoot.transform.localScale = Vector3.one * 1.25f;
         }
@@ -181,14 +183,10 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
         var tagRarity = state.model.Get<TagRarity>();
         switch (tagRarity.rarity)
         {
-            case DiceRarity.COMMON:
-                return 3; break;
-            case DiceRarity.UNCOMMON:
-                return 5; break;
-            case DiceRarity.RARE:
-                return 10; break;
-            default:
-                throw new ArgumentOutOfRangeException();
+            case DiceRarity.COMMON: return 3;
+            case DiceRarity.UNCOMMON: return 5;
+            case DiceRarity.RARE: return 10;
+            default: throw new ArgumentOutOfRangeException();
         }
     }
 
@@ -197,11 +195,12 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
         if (state.model.Is<TagAnimalView>(out var av)) return av.name;
         return "A Tiny Creature";
     }
-
+    
     public void OnPointerExit(PointerEventData eventData)
     {
         isMouseOver = false;
-
+        G.hover_dice = null;
+        
         if (scaleRoot)
         {
             scaleRoot.DOKill();

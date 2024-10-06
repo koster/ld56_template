@@ -26,7 +26,7 @@ public class MinValue : BaseInteraction, IRollFilter
     {
         if (state.model.Is<TagMinValue>(out var ae))
         {
-            if (roll < ae.val)
+            if (roll <= ae.val)
             {
                 return ae.val + 1;
             }
