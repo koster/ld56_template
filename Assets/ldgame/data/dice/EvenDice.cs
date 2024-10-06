@@ -2,11 +2,10 @@ using System.Collections;
 using Engine.Math;
 using UnityEngine;
 
-public class EvenDice : BasicDice
+public class EvenDice : DiceBase
 {
     public EvenDice()
     {
-        Define<TagTint>().color = Color.cyan;
         Define<TagAlwaysEven>();
         Define<TagDescription>().loc = $"{TextStuff.Fudge}: Always EVEN.";
         Define<TagRarity>().rarity = DiceRarity.COMMON;

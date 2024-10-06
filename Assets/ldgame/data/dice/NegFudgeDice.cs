@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class NegFudgeDice : BasicDice
+public class NegFudgeDice : DiceBase
 {
     public NegFudgeDice()
     {

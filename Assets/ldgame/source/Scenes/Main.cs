@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -114,27 +115,68 @@ public class Main : MonoBehaviour
         
         if (levelEntity.Is<TagHard>())
         {
+            G.main.AdjustSay(0f);
             yield return G.main.Say("Even more, RARER cretures desired to join.");
             yield return G.main.SmartWait(3f);
+            
+            G.main.AdjustSay(-1.2f);
             yield return G.main.Say("But still, they could only take ONE.");
             yield return SetupPicker(new List<DiceRarity> { DiceRarity.RARE });
 
             yield return G.main.Say($"{pickedItem.GetNme()} was chosen.");
             yield return G.main.SmartWait(1f);
+            
+            G.main.AdjustSay(0f);
+            
+            yield return G.main.Say($"The creatures were starving...");
+            yield return G.main.SmartWait(3f);
+            
+            yield return G.main.Say($"One of them had to be let go.");
+            yield return G.main.SmartWait(3f);
+            
+            G.main.AdjustSay(-1.2f);
+            yield return G.main.Say($"Choose wisely.");
+
+            G.main.showEnergyValue = true;
+            
+            var allDice = G.run.diceBag.ConvertAll(m => CMS.Get<DiceBase>(m.id)).ToList();
+            yield return G.main.SetupPicker(allDice, showAmount: allDice.Count, addToBag: false);
+
+            var pickedId = G.main.pickedItem.state.model.id;
+            
+            yield return G.main.picker.Clear();
+            G.main.picker.Claim(CreateDice(pickedId));
+            
+            G.main.showEnergyValue = false;
+            
+            G.run.diceBag.Remove(G.run.diceBag.Find(m => m.id == pickedId));
+            yield return G.main.Say($"{G.main.pickedItem.GetNme()} was left behind.");
+            yield return G.main.SmartWait(3f);
+
+            if (G.main.pickedItem.GetEnergyValue() == 0)
+                yield return G.main.Say($"No Energy restored.");
+            else
+                yield return G.main.Say($"{G.main.pickedItem.GetEnergyValue()} Energy restored.");
+            yield return G.main.SmartWait(3f);
         }
     }
 
     public IEnumerator SetupPicker(List<DiceRarity> rarityToSuggest, int maxPick = 1, bool dontClear = false)
     {
-        yield return picker.Clear();
-        
-        var allDice = CMS.GetAll<BasicDice>();
+        var allDice = CMS.GetAll<DiceBase>();
 
-        var allRarity = allDice.FindAll(m => rarityToSuggest.Contains(m.Get<TagRarity>().rarity));
+        var allRarity = allDice.FindAll(m => rarityToSuggest.Contains(m.Get<TagRarity>().rarity) && !m.Is<TagExcludeFromReward>());
         allRarity.Shuffle();
 
-        for (var i = 0; i < 3; i++)
-            picker.Claim(CreateDice(allRarity[i].id));
+        yield return SetupPicker(allRarity, maxPick, dontClear);
+    }
+    
+    public IEnumerator SetupPicker(List<DiceBase> dice, int maxPick = 1, bool dontClear = false, bool addToBag = true, int showAmount = 3)
+    {
+        yield return picker.Clear();
+
+        for (var i = 0; i < showAmount; i++)
+            picker.Claim(CreateDice(dice[i].id));
 
         yield return new WaitForSeconds(0.1f);
 
@@ -143,13 +185,12 @@ public class Main : MonoBehaviour
             pickedItem = null;
             while (pickedItem == null) yield return new WaitForEndOfFrame();
 
-            hand.Claim(pickedItem);
+            if (addToBag) hand.Claim(pickedItem);
         }
 
-        if (!dontClear)
-            yield return picker.Clear();
+        if (!dontClear) yield return picker.Clear();
 
-        G.run.diceBag.Add(new DiceBagState(pickedItem.state.model.id));
+        if (addToBag) G.run.diceBag.Add(new DiceBagState(pickedItem.state.model.id));
     }
 
     public void EndTurn()
@@ -350,6 +391,7 @@ public class Main : MonoBehaviour
 
     bool isWin;
     bool skip;
+    public bool showEnergyValue;
 
     void Update()
     {
@@ -372,6 +414,11 @@ public class Main : MonoBehaviour
         {
             G.run.level = 0;
             SceneManager.LoadScene(GameSettings.MAIN_SCENE);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            StartCoroutine(WinSequence());
         }
         
         if (Input.GetKeyDown(KeyCode.N))

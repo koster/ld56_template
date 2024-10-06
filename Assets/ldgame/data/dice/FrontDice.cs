@@ -2,7 +2,7 @@ using System.Collections;
 using Engine.Math;
 using UnityEngine;
 
-public class FrontDice : BasicDice
+public class FrontDice : DiceBase
 {
     public FrontDice()
     {

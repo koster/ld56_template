@@ -1,17 +1,17 @@
 using System.Collections;
 using UnityEngine;
 
-public class BlockDice : BasicDice
+public class BlockDice : DiceBase
 {
     public BlockDice()
     {
-        Define<TagTint>().color = new Color(.2f, 0.22f, 0.85f, .22f);
         Define<TagBlock>();
         Define<TagDescription>().loc = $"{TextStuff.Block}, subtracts it's value from incoming damage.";
         Define<TagRarity>().rarity = DiceRarity.RARE;
         
         Define<TagAnimalView>().name = "Hedgehog";
         Define<TagAnimalView>().sprite = SpriteUtil.Load("animals", "hedgehog");
+        Define<TagAnimalView>().color = Color.white;
     }
 }
 

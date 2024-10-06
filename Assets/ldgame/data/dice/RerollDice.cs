@@ -2,7 +2,7 @@ using System.Collections;
 using Engine.Math;
 using UnityEngine;
 
-public class RerollDice : BasicDice
+public class RerollDice : DiceBase
 {
     public RerollDice()
     {

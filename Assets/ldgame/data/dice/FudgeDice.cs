@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class FudgeDice : BasicDice
+public class FudgeDice : DiceBase
 {
     public FudgeDice()
     {

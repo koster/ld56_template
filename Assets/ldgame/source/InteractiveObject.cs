@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using DG.Tweening;
 using TMPro;
@@ -14,6 +15,7 @@ public class DiceState
     public bool isDead;
     public int Sides => model.Get<TagSides>().sides;
     public DiceBagState bagState;
+    public bool isClaimed;
 }
 
 public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
@@ -163,10 +165,31 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
             var desc = $"{GetNme()}\n\n";
             if (state.model.Is<TagRarity>(out var rr)) desc += rr.rarity.RarityToString()+"\n";
             if (state.model.Is<TagDescription>(out var td)) desc += td.loc;
+            if (G.main.showEnergyValue) desc += "\n\n <color=#ff7700>Energy Value: " + GetEnergyValue()+"</color>"; 
+            
             return desc;
         }
 
         return null;
+    }
+
+    public int GetEnergyValue()
+    {
+        if (state.model is BasicDice)
+            return 0;
+
+        var tagRarity = state.model.Get<TagRarity>();
+        switch (tagRarity.rarity)
+        {
+            case DiceRarity.COMMON:
+                return 3; break;
+            case DiceRarity.UNCOMMON:
+                return 5; break;
+            case DiceRarity.RARE:
+                return 10; break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 
     public string GetNme()

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Min2Dice : BasicDice
+public class Min2Dice : DiceBase
 {
     public Min2Dice()
     {

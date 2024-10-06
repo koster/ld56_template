@@ -1,7 +1,7 @@
 using Engine.Math;
 using UnityEngine;
 
-public class WildcardDice : BasicDice
+public class WildcardDice : DiceBase
 {
     public WildcardDice()
     {

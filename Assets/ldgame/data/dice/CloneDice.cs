@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class CloneDice : BasicDice
+public class CloneDice : DiceBase
 {
     public CloneDice()
     {

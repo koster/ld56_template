@@ -28,8 +28,9 @@ public class DiceHolder : MonoBehaviour
 
     void TryClaim(InteractiveObject arg0)
     {
-        if (IsDiceEntrapped(arg0))
+        if (IsDiceEntrapped(arg0) && !arg0.state.isClaimed)
         {
+            arg0.state.isClaimed = true;
             StartCoroutine(ClaimDiceIntoGoal(arg0));
         }
     }

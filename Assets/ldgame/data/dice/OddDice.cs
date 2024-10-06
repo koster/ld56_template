@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class OddDice : BasicDice
+public class OddDice : DiceBase
 {
     public OddDice()
     {
