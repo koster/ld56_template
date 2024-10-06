@@ -635,6 +635,7 @@ public class Main : MonoBehaviour
 
     IEnumerator ChallengeDefeated(ChallengeContainer mfk)
     {
+        G.audio.Play<SFX_Kill>();
         mfk.transform.DOScale(0f, 0.5f);
         yield return new WaitForSeconds(0.5f);
     }
