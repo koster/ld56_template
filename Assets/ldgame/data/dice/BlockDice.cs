@@ -32,6 +32,7 @@ public class BlockDiceInteraction : BaseInteraction, IFilterDamage
             }
             else
             {
+                dmgIncoming.dmg = 0;
                 yield return dice.state.view.SetValue(dice.state.rollValue - dmgIncoming.dmg);
             }
         }
