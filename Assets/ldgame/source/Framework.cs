@@ -10,6 +10,7 @@ public static class G
     public static Savefile save;
     public static CameraHandle camera;
     public static Feel feel;
+    public static ScreenFader fader;
 
     public static RunState run;
 

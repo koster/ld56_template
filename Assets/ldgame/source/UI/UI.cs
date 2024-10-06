@@ -10,6 +10,8 @@ public class UI : MonoBehaviour
     public GameObject win;
     public GameObject defeat;
 
+    public GameObject disableInput;
+
     void Awake()
     {
         G.ui = this;
@@ -53,5 +55,15 @@ public class UI : MonoBehaviour
     {
         healthValueTransform.transform.DOKill(true);
         yield return healthValueTransform.transform.DOScale(Vector3.one * 1f, 0.1f).WaitForCompletion();
+    }
+
+    public void DisableInput()
+    {
+        disableInput.SetActive(true);
+    }
+    
+    public void EnableInput()
+    {
+        disableInput.SetActive(false);
     }
 }

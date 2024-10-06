@@ -57,7 +57,10 @@ public class XKLogoAnimation : MonoBehaviour
 
         logo.DOFade(0f, 2f);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
+        
+        G.fader.FadeIn();
+        yield return new WaitForSeconds(1f);
         
         SceneManager.LoadScene(GameSettings.MAIN_SCENE);
     }

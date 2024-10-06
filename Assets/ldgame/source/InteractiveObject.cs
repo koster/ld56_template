@@ -164,7 +164,7 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
         return null;
     }
 
-    string GetNme()
+    public string GetNme()
     {
         if (state.model.Is<TagAnimalView>(out var av)) return av.name;
         return "A Tiny Creature";

@@ -28,6 +28,8 @@ public class ServicedMain : MonoBehaviour
 
         gameObject.AddComponent<Savesystem>();
         gameObject.AddComponent<AudioSystem>();
+        G.fader=gameObject.AddComponent<ScreenFader>();
+        
         G.camera = gameObject.AddComponent<CameraHandle>();
         G.feel = gameObject.AddComponent<Feel>();
         
