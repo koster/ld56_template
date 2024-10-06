@@ -540,34 +540,34 @@ public class Main : MonoBehaviour
         // G.ui.debug_text.text += "D-add dice\n";
         // G.ui.debug_text.text += "I-reload with intro\n";
 
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            G.run.level = 0;
-            SceneManager.LoadScene(GameSettings.MAIN_SCENE);
-        }
-
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            StartCoroutine(WinSequence());
-        }
-
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            G.run.level++;
-            SceneManager.LoadScene(GameSettings.MAIN_SCENE);
-        }
-
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            G.run = null;
-            SceneManager.LoadScene(0);
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            StartCoroutine(DrawDice());
-            G.feel.UIPunchSoft();
-        }
+        // if (Input.GetKeyDown(KeyCode.R))
+        // {
+        //     G.run.level = 0;
+        //     SceneManager.LoadScene(GameSettings.MAIN_SCENE);
+        // }
+        //
+        // if (Input.GetKeyDown(KeyCode.W))
+        // {
+        //     StartCoroutine(WinSequence());
+        // }
+        //
+        // if (Input.GetKeyDown(KeyCode.N))
+        // {
+        //     G.run.level++;
+        //     SceneManager.LoadScene(GameSettings.MAIN_SCENE);
+        // }
+        //
+        // if (Input.GetKeyDown(KeyCode.I))
+        // {
+        //     G.run = null;
+        //     SceneManager.LoadScene(0);
+        // }
+        //
+        // if (Input.GetKeyDown(KeyCode.D))
+        // {
+        //     StartCoroutine(DrawDice());
+        //     G.feel.UIPunchSoft();
+        // }
     }
 
     void PlacementHintLogic()
