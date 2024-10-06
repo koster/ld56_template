@@ -350,13 +350,13 @@ public class Main : MonoBehaviour
         if (G.drag_dice != null)
         {
             if (G.drag_dice.state.isPlayed)
-                PlacementHint.color = new Color(1f, 1f, 1f, 0.25f);
+                PlacementHint.color = new Color(1f, 1f, 1f, 0.05f);
             else
                 PlacementHint.color = Color.white;
         }
         else
         {
-            PlacementHint.color = new Color(1f, 1f, 1f, 0.25f);
+            PlacementHint.color = new Color(1f, 1f, 1f, 0.05f);
         }
     }
 
@@ -421,6 +421,8 @@ public class Main : MonoBehaviour
 
     IEnumerator WinSequence()
     {
+        G.hud.DisableHud();
+
         isWin = true;
         
         G.ui.win.SetActive(true);

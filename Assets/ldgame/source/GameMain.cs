@@ -32,6 +32,8 @@ public class ServicedMain : MonoBehaviour
         G.feel = gameObject.AddComponent<Feel>();
         
         CMS.Init();
+        
+        G.audio.Play(CMS.Get<Sound_AmbienceForest>());
 
         Application.logMessageReceived += LogCallback;
     }
