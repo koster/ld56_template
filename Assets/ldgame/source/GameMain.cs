@@ -1,4 +1,5 @@
 using System;
+using GameAnalyticsSDK;
 using UnityEngine;
 
 public class ServicedMain : MonoBehaviour
@@ -11,6 +12,8 @@ public class ServicedMain : MonoBehaviour
         if (!isInitialized)
         {
             G.run = null;
+            
+            GameAnalytics.Initialize();
             
             GameObject servicedMain = new GameObject("GameMain");
             servicedMain.AddComponent<ServicedMain>();

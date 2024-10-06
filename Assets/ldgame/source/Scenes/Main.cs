@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DG.Tweening;
+using GameAnalyticsSDK;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -275,6 +276,8 @@ public class Main : MonoBehaviour
 
     IEnumerator Start()
     {
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "level_" + G.run.level);
+        
         CMS.Init();
 
         G.hud.DisableHud();
@@ -335,7 +338,7 @@ public class Main : MonoBehaviour
 
             yield return new WaitForSeconds(0.5f);
 
-            // PlayerPrefs.SetInt("tutorial1", 1);
+            PlayerPrefs.SetInt("tutorial1", 1);
             G.hud.EnableHud();
         }
         
@@ -356,7 +359,7 @@ public class Main : MonoBehaviour
             
             yield return G.ui.tutorial.WaitForSkip();
 
-            // PlayerPrefs.SetInt("tutorial2", 1);
+            PlayerPrefs.SetInt("tutorial2", 1);
         }
     }
 
@@ -647,6 +650,8 @@ public class Main : MonoBehaviour
 
     IEnumerator WinSequence()
     {
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, "level_" + G.run.level);
+
         if (isWin)
         {
             Debug.Log("<color=red>double trigger win sequence lol</color>");
@@ -684,7 +689,7 @@ public class Main : MonoBehaviour
 
     bool IsFinal()
     {
-        return G.run.level >= levelSeq.Count;
+        return G.run.level >= levelSeq.Count || levelEntity.Is<TagIsFinal>();
     }
 
     public class IntOutput
@@ -729,6 +734,8 @@ public class Main : MonoBehaviour
 
     IEnumerator Loss()
     {
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, "level_" + G.run.level);
+        
         G.ui.defeat.SetActive(true);
         yield return new WaitForSeconds(1f);
         G.run = null;
