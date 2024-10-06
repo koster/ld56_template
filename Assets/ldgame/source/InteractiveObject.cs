@@ -70,15 +70,20 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
 
         if (state.rollValue > state.Sides)
         {
-            // var delta = state.rollValue - state.Sides;
-            // yield return G.main.TransferToNextDice(this, delta);
-            //
-            
             Punch();
             G.feel.UIPunchSoft();
             yield return new WaitForSeconds(0.25f);
 
             state.rollValue = 1;
+        }
+
+        if (state.rollValue <0)
+        {
+            Punch();
+            G.feel.UIPunchSoft();
+            yield return new WaitForSeconds(0.25f);
+
+            state.rollValue = state.Sides;
         }
         
         value.text = "";//state.rollValue.ToString();

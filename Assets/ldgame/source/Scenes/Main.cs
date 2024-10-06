@@ -420,6 +420,12 @@ public class Main : MonoBehaviour
     IEnumerator WinSequence()
     {
         isWin = true;
+        
+        G.ui.win.SetActive(true);
+
+        yield return new WaitForSeconds(1.22f);
+
+        G.ui.win.SetActive(false);
 
         yield return storage.Clear();
         yield return field.Clear();
@@ -428,7 +434,6 @@ public class Main : MonoBehaviour
         yield return ShowPicker();
 
         G.run.level++;
-        G.ui.win.SetActive(true);
 
         yield return new WaitForSeconds(1f);
 

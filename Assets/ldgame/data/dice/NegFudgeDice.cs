@@ -11,7 +11,7 @@ public class NegFudgeDice : BasicDice
         
         Define<TagAnimalView>().name = "Black Cat";
         Define<TagAnimalView>().sprite = SpriteUtil.Load("animals", "cat_black");
-        Define<TagAnimalView>().color = new Color(0.1f, 0.1f, 0.1f);
+        Define<TagAnimalView>().color = new Color(0.1f, 0.1f, 0.2f);
     }
 }
 
