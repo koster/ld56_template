@@ -337,6 +337,7 @@ GameObject:
   - component: {fileID: 88564947}
   - component: {fileID: 88564949}
   - component: {fileID: 88564948}
+  - component: {fileID: 88564950}
   m_Layer: 5
   m_Name: text
   m_TagString: Untagged
@@ -383,17 +384,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: WINNER!
+  m_text: <link=wave>VICTORY</link>
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d2a427cc399e9ba44bba3cb84e87c1e3, type: 2}
-  m_sharedMaterial: {fileID: -5530798732819667733, guid: d2a427cc399e9ba44bba3cb84e87c1e3, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a97c0a66bddc4f6418b01bc234f36180, type: 2}
+  m_sharedMaterial: {fileID: -5530798732819667733, guid: a97c0a66bddc4f6418b01bc234f36180, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4285595560
-  m_fontColor: {r: 0.65735215, g: 1, b: 0.43867922, a: 1}
+    rgba: 4285591039
+  m_fontColor: {r: 1, g: 0.9304094, b: 0.43921566, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -462,6 +463,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 88564946}
   m_CullTransparentMesh: 1
+--- !u!114 &88564950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 88564946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22953df2a4a43be4cb5a29ab40e893e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMesh: {fileID: 88564948}
+  frequency: 5
+  amplitude: 5
 --- !u!1 &88675407
 GameObject:
   m_ObjectHideFlags: 0
@@ -6440,7 +6456,6 @@ MonoBehaviour:
   - {fileID: 434272313}
   - {fileID: 936718315}
   - {fileID: 434897964}
-  ignorePointerEnterCooldown: 0
   showEnergyValue: 0
 --- !u!1 &2137578782
 GameObject:

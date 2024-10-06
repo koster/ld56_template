@@ -25,5 +25,6 @@ public class BuildInfoDisplay : MonoBehaviour
         // Настраиваем визуальные параметры текста
         buildInfoText.fontSize = 12;
         buildInfoText.alignment = TextAlignmentOptions.TopRight;
+        buildInfoText.alpha = 0.02f;
     }
 }

@@ -79,9 +79,7 @@ public class Main : MonoBehaviour
         E.Id<Level5>(),
         E.Id<Level6>(),
         E.Id<Level7>(),
-        E.Id<Level8>(),
-        E.Id<Level9>(),
-        E.Id<Level10>()
+        E.Id<Level8>()
     };
 
     void Awake()
@@ -698,8 +696,8 @@ public class Main : MonoBehaviour
         
         yield return new WaitForSeconds(0.5f);
 
-        HitEnergyPf.GetComponent<ParticleSystem>().Stop();
-        HitEnergyPf.AddComponent<Lifetime>();
+        inst.GetComponent<ParticleSystem>().Stop();
+        inst.AddComponent<Lifetime>();
 
         G.ui.Punch(G.hud.Health.transform);
 

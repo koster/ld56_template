@@ -1,6 +1,6 @@
-public class ChallengeTree : CMSEntity
+public class ChallengeHand : CMSEntity
 {
-    public ChallengeTree()
+    public ChallengeHand()
     {
         Define<TagPrefab>().prefab = "prefab/challenges/tree".Load<InteractiveObject>();
         Define<TagPreferSlot>().idx = 0;
