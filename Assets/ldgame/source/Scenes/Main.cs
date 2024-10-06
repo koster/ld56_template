@@ -211,6 +211,8 @@ public class Main : MonoBehaviour
         for (var i = 0; i < showAmount; i++)
             picker.Claim(CreateDice(dice[i].id));
 
+        G.audio.Play<SFX_DiceDraw>();
+        
         yield return new WaitForSeconds(0.1f);
 
         if (showAmount > 3)
