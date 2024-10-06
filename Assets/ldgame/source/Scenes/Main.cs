@@ -115,6 +115,8 @@ public class Main : MonoBehaviour
 
     IEnumerator SetupPicker(List<DiceRarity> rarityToSuggest)
     {
+        yield return picker.Clear();
+        
         var allDice = CMS.GetAll<BasicDice>();
 
         var allRarity = allDice.FindAll(m => rarityToSuggest.Contains(m.Get<TagRarity>().rarity));
@@ -427,7 +429,7 @@ public class Main : MonoBehaviour
 
         G.ui.win.SetActive(false);
 
-        yield return storage.Clear();
+        // yield return storage.Clear();
         yield return field.Clear();
         yield return hand.Clear();
 
