@@ -126,9 +126,11 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
             shadow?.SetActive((zone?.isShadow ?? false) || state == null);
     }
 
+    Tween punchTwee;
     public void Punch()
     {
-        transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0.2f), 0.2f);
+        punchTwee.Kill(true);
+        punchTwee=transform.DOPunchScale(new Vector3(0.2f, 0.2f, 0.2f), 0.2f);
     }
 
     public void Leave()
