@@ -123,7 +123,7 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
     {
         if (state != null)
         {
-            var desc = "";
+            var desc = "A Tiny Creature\n\n";
             if (state.model.Is<TagRarity>(out var rr)) desc += rr.rarity.RarityToString()+"\n";
             if (state.model.Is<TagDescription>(out var td)) desc += td.loc;
             return desc;

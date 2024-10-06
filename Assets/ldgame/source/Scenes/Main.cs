@@ -441,6 +441,8 @@ public class Main : MonoBehaviour
 
     public IEnumerator DealDamage(int dmg)
     {
+        G.ui.Punch(G.hud.Health.transform);
+        
         var outputDmg = new IntOutput() { dmg = dmg };
         var fdmg = interactor.FindAll<IFilterDamage>();
         var interactiveObjects = new List<InteractiveObject>(field.objects);

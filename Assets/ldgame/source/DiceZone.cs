@@ -74,7 +74,6 @@ public class DiceZone : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Debug.Log(capture.size);
         if (capture.size != Vector2.zero)
         {
             Gizmos.color = new Color(0.5f, 0, 0, 0.25f);

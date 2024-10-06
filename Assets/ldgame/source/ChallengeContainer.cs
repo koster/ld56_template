@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class ChallengeContainer : MonoBehaviour
+public class ChallengeContainer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public CMSEntity model;
     public List<DiceHolder> slots = new List<DiceHolder>();
@@ -25,5 +26,26 @@ public class ChallengeContainer : MonoBehaviour
         {
             slots[index].spec = challenge.goals[index];
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        var dsc = "A CHALLENGE\n";
+        if (model.Is<TagChallengePenalty>(out var pen))
+        {
+            if (pen.damage > 0)
+            {
+                dsc += $"\n";
+                dsc += $"Will take {pen.damage} {TextStuff.ENERGY} from you";
+                dsc += $"\n" +
+                       $"on {TextStuff.END_TURN}";
+            }
+        }
+        G.hud.tooltip.Show(dsc);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        G.hud.tooltip.Hide();
     }
 }

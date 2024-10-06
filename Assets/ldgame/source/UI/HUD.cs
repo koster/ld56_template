@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,37 @@ public class HUD : MonoBehaviour
     void Start()
     {
         EndTurn.onClick.AddListener(OnClickEndTurn);
+
+        StartCoroutine(TrackHealth());
+    }
+
+    IEnumerator TrackHealth()
+    {
+        Health.value = G.run.maxHealth / 2;
+        while (true)
+        {
+            if (Health.value > G.run.health)
+            {
+                Health.value--;
+                yield return UpdateHP();
+            }
+
+            if (Health.value < G.run.health)
+            {
+                Health.value++;
+                yield return UpdateHP();
+            }
+            
+            Health.maxValue = G.run.maxHealth;
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    IEnumerator UpdateHP()
+    {
+        yield return G.ui.ScaleCountIn(HealthValue.transform);
+        HealthValue.text = Health.value + "/" + G.run.maxHealth;
+        yield return G.ui.ScaleCountOut(HealthValue.transform);
     }
 
     void OnClickEndTurn()
@@ -40,9 +72,6 @@ public class HUD : MonoBehaviour
     void Update()
     {
         DiceView.text = "Dice left:" + G.main.diceBag.Count;
-        Health.value = G.run.health;
-        Health.maxValue = G.run.maxHealth;
-        HealthValue.text = G.run.health + "/" + G.run.maxHealth;
     }
 
     public static Vector2 MousePositionToCanvasPosition(Canvas canvas, RectTransform rectTransform)

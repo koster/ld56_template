@@ -6,6 +6,7 @@ public static class TextStuff
 {
     public static string Pinkish = "#75428f";
     public static string Greenish = "#32a852";
+    public static string Orange = "#FF7700";
 
     public static string Common = "#999999";
     public static string Uncommon = "#6b6fe3";
@@ -17,6 +18,8 @@ public static class TextStuff
     public static string Spectral = "Spectral".Color(Pinkish);
     public static string Block = "Block".Color(Color.gray);
     public static string Clone = "Clone".Color(Greenish);
+    public static string ENERGY = "ENERGY".Color(Orange);
+    public static string END_TURN = "End Turn".Color(Pinkish);
 
     public static string RarityToString(this DiceRarity r)
     {
