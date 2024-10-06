@@ -79,7 +79,7 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
             state.rollValue = 1;
         }
 
-        if (state.rollValue <0)
+        if (state.rollValue <= 0)
         {
             Punch();
             G.feel.UIPunchSoft();
