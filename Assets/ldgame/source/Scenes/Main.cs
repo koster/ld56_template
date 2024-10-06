@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using DG.Tweening;
 using TMPro;
 using Unity.VisualScripting;
@@ -94,10 +95,11 @@ public class Main : MonoBehaviour
             G.run.maxHealth = 15;
             G.run.health = G.run.maxHealth;
 
-            G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
-            G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
-            G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
-            G.run.diceBag.Add(new DiceBagState(E.Id<FudgeDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<PlusOneGrowDice>()));
+            // G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
+            // G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
+            // G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
+            // G.run.diceBag.Add(new DiceBagState(E.Id<FudgeDice>()));
         }
 
         picker.OnClickDice += OnClickPickerDice;

@@ -5,7 +5,7 @@ public class PlusOneGrowDice : DiceBase
 {
     public PlusOneGrowDice()
     {
-        Define<TagDescription>().loc = $"Increases it's value by 1 each turn. \n (Is not removed on end turn)";
+        Define<TagDescription>().loc = $"Increases it's value by 1 each turn WHEN it was played. \n (Is not removed on end turn)";
         Define<TagRarity>().rarity = DiceRarity.RARE;
 
         Define<TagGrowEachTurn>().delta = 1;
@@ -26,7 +26,7 @@ public class TagGrowEachTurn : EntityComponentDefinition
     public int delta;
 }
 
-public class GrowEachTurn : IOnEndTurnFieldDice
+public class GrowEachTurn : BaseInteraction, IOnEndTurnFieldDice
 {
     public IEnumerator OnEndTurnInField(DiceState state)
     {

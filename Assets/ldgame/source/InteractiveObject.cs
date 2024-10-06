@@ -71,10 +71,10 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
         G.audio.Play<SFX_Roll>();
         
         state.rollValue = val;
+        Punch();
 
         if (state.rollValue > state.Sides)
         {
-            Punch();
             G.feel.UIPunchSoft();
             yield return new WaitForSeconds(0.25f);
 
@@ -83,7 +83,6 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
 
         if (state.rollValue <= 0)
         {
-            Punch();
             G.feel.UIPunchSoft();
             yield return new WaitForSeconds(0.25f);
 
