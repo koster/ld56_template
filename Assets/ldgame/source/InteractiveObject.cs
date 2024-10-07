@@ -170,7 +170,7 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
     {
         if (state != null)
         {
-            var desc = $"{GetNme()}\n\n";
+            var desc = $"{GetNme()}{GetRollv()}\n\n";
             if (state.model.Is<TagRarity>(out var rr)) desc += rr.rarity.RarityToString()+"\n";
             if (state.model.Is<TagDescription>(out var td)) desc += td.loc;
             if (G.main.showEnergyValue) desc += "\n\n <color=#ff7700>Energy Value: " + GetEnergyValue()+"</color>"; 
@@ -179,6 +179,13 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
         }
 
         return null;
+    }
+
+    string GetRollv()
+    {
+        if (state != null && state.rollValue != 0)
+            return "(" + state.rollValue + ")";
+        return "";
     }
 
     public int GetEnergyValue()

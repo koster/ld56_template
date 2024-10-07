@@ -406,12 +406,12 @@ TextureImporter:
       name: rat
       rect:
         serializedVersion: 2
-        x: 611
+        x: 588
         y: 376
-        width: 124
+        width: 147
         height: 141
       alignment: 9
-      pivot: {x: 0.3467742, y: 0.29078013}
+      pivot: {x: 0.46530613, y: 0.29078013}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -565,7 +565,7 @@ TextureImporter:
         width: 326
         height: 289
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

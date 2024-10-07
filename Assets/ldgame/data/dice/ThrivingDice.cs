@@ -5,7 +5,7 @@ public class ThrivingDice : DiceBase
     public ThrivingDice()
     {
         Define<TagDescription>().loc = $"Is not removed from board on end turn";
-        Define<TagRarity>().rarity = DiceRarity.RARE;
+        Define<TagRarity>().rarity = DiceRarity.COMMON;
 
         Define<TagThriving>();
 

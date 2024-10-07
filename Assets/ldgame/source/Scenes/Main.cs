@@ -100,7 +100,6 @@ public class Main : MonoBehaviour
             G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
             G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
             G.run.diceBag.Add(new DiceBagState(E.Id<FudgeDice>()));
-            G.run.diceBag.Add(new DiceBagState(E.Id<MorphingDice>()));
         }
 
         picker.OnClickDice += OnClickPickerDice;
