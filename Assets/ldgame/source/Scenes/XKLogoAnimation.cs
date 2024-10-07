@@ -12,6 +12,8 @@ public class XKLogoAnimation : MonoBehaviour
 
     IEnumerator Start()
     {
+        G.audio.Play<Sound_AmbienceForest>();
+        
         if (GameSettings.SKIP_INTRO)
         {
             SceneManager.LoadScene(GameSettings.MAIN_SCENE);
@@ -23,12 +25,14 @@ public class XKLogoAnimation : MonoBehaviour
 
         yield return SmartWait(0.5f);
 
+        G.audio.Play<SFX_Click>();
         G.feel.UIPunchSoft();
 
         text.DOFade(1f, 0.5f);
 
         yield return SmartWait(1.5f);
 
+        G.audio.Play<SFX_Click>();
         G.feel.UIPunchSoft();
 
         text.DOFade(0f, 1f);
@@ -37,18 +41,21 @@ public class XKLogoAnimation : MonoBehaviour
 
         text.text = "<size=50%>MADE IN 48 HOURS FOR\nLUDUM DARE 56</size>";
 
+        G.audio.Play<SFX_Click>();
         G.feel.UIPunchSoft();
 
         text.DOFade(1f, 0.5f);
 
         yield return SmartWait(3.5f);
 
+        G.audio.Play<SFX_Click>();
         G.feel.UIPunchSoft();
 
         text.DOFade(0f, 1.5f);
 
         yield return SmartWait(1.5f);
 
+        G.audio.Play<SFX_Click>();
         G.feel.UIPunchSoft();
 
         logo.DOFade(1f, 1f);

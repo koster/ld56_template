@@ -100,6 +100,7 @@ public class Main : MonoBehaviour
             G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
             G.run.diceBag.Add(new DiceBagState(E.Id<BasicDice>()));
             G.run.diceBag.Add(new DiceBagState(E.Id<FudgeDice>()));
+            G.run.diceBag.Add(new DiceBagState(E.Id<MorphingDice>()));
         }
 
         picker.OnClickDice += OnClickPickerDice;
@@ -145,6 +146,8 @@ public class Main : MonoBehaviour
 
             G.main.AdjustSay(0f);
 
+            yield return G.main.hand.Clear();
+            
             yield return G.main.Say($"The creatures were starving...");
             yield return G.main.SmartWait(3f);
 
@@ -152,7 +155,7 @@ public class Main : MonoBehaviour
             yield return G.main.SmartWait(3f);
 
             G.main.AdjustSay(-1.2f);
-            yield return G.main.Say($"Choose wisely.");
+            yield return G.main.Say($"Exile a creature. Choose wisely.");
 
             G.main.showEnergyValue = true;
 
@@ -229,7 +232,9 @@ public class Main : MonoBehaviour
             if (maxPick > 0)
                 G.ui.EnableInput();
         }
-
+        
+        G.ui.DisableInput();
+        
         if (!dontClear) yield return picker.Clear();
 
         if (addToBag) G.run.diceBag.Add(new DiceBagState(pickedItem.state.model.id));
@@ -342,25 +347,25 @@ public class Main : MonoBehaviour
             G.hud.EnableHud();
         }
         
-        if (G.run.level == 2 && PlayerPrefs.GetInt("tutorial2", 0) == 0)
-        {
-            G.ui.tutorial.SetTutorialText("You can store played dice in the STORAGE.");
-            G.ui.tutorial.Show(G.ui.tutorial_storage);
-            
-            yield return G.ui.tutorial.WaitForSkip();
-            
-            G.ui.tutorial.SetTutorialText("Drag them from the field once they've been played.", 400);
-            G.ui.tutorial.Show(G.ui.tutorial_field);
-            
-            yield return G.ui.tutorial.WaitForSkip();
-            
-            G.ui.tutorial.SetTutorialText("Stored dice are persisted in between encounters.");
-            G.ui.tutorial.Show(G.ui.tutorial_storage);
-            
-            yield return G.ui.tutorial.WaitForSkip();
-
-            PlayerPrefs.SetInt("tutorial2", 1);
-        }
+        // if (G.run.level == 2 && PlayerPrefs.GetInt("tutorial2", 0) == 0)
+        // {
+        //     G.ui.tutorial.SetTutorialText("You can store played dice in the STORAGE.");
+        //     G.ui.tutorial.Show(G.ui.tutorial_storage);
+        //     
+        //     yield return G.ui.tutorial.WaitForSkip();
+        //     
+        //     G.ui.tutorial.SetTutorialText("Drag them from the field once they've been played.", 400);
+        //     G.ui.tutorial.Show(G.ui.tutorial_field);
+        //     
+        //     yield return G.ui.tutorial.WaitForSkip();
+        //     
+        //     G.ui.tutorial.SetTutorialText("Stored dice are persisted in between encounters.");
+        //     G.ui.tutorial.Show(G.ui.tutorial_storage);
+        //     
+        //     yield return G.ui.tutorial.WaitForSkip();
+        //
+        //     PlayerPrefs.SetInt("tutorial2", 1);
+        // }
     }
 
     IEnumerator DrawDice()
@@ -458,7 +463,7 @@ public class Main : MonoBehaviour
         StartCoroutine(PlayDice(dice));
     }
 
-    IEnumerator PlayDice(InteractiveObject dice)
+    public IEnumerator PlayDice(InteractiveObject dice)
     {
         G.audio.Play<SFX_Animal>();
         
@@ -540,34 +545,36 @@ public class Main : MonoBehaviour
         // G.ui.debug_text.text += "D-add dice\n";
         // G.ui.debug_text.text += "I-reload with intro\n";
 
-        // if (Input.GetKeyDown(KeyCode.R))
-        // {
-        //     G.run.level = 0;
-        //     SceneManager.LoadScene(GameSettings.MAIN_SCENE);
-        // }
-        //
-        // if (Input.GetKeyDown(KeyCode.W))
-        // {
-        //     StartCoroutine(WinSequence());
-        // }
-        //
-        // if (Input.GetKeyDown(KeyCode.N))
-        // {
-        //     G.run.level++;
-        //     SceneManager.LoadScene(GameSettings.MAIN_SCENE);
-        // }
-        //
-        // if (Input.GetKeyDown(KeyCode.I))
-        // {
-        //     G.run = null;
-        //     SceneManager.LoadScene(0);
-        // }
-        //
-        // if (Input.GetKeyDown(KeyCode.D))
-        // {
-        //     StartCoroutine(DrawDice());
-        //     G.feel.UIPunchSoft();
-        // }
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            G.run.level = 0;
+            SceneManager.LoadScene(GameSettings.MAIN_SCENE);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            StartCoroutine(WinSequence());
+        }
+        
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            G.run.level++;
+            SceneManager.LoadScene(GameSettings.MAIN_SCENE);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            G.run = null;
+            SceneManager.LoadScene(0);
+        }
+        
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            StartCoroutine(DrawDice());
+            G.feel.UIPunchSoft();
+        }
+#endif
     }
 
     void PlacementHintLogic()
@@ -684,7 +691,10 @@ public class Main : MonoBehaviour
         if (!IsFinal())
             SceneManager.LoadScene(GameSettings.MAIN_SCENE);
         else
+        {
+            G.audio.Play<SFX_Magic>();
             SceneManager.LoadScene("ldgame/end_screen");
+        }
     }
 
     bool IsFinal()

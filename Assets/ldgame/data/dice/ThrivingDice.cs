@@ -1,13 +1,12 @@
 using UnityEngine;
 
-public class ThrivingDice : CMSEntity
+public class ThrivingDice : DiceBase
 {
     public ThrivingDice()
     {
-        Define<TagDescription>().loc = $"Is not removed on end turn";
+        Define<TagDescription>().loc = $"Is not removed from board on end turn";
         Define<TagRarity>().rarity = DiceRarity.RARE;
 
-        Define<TagGrowEachTurn>().delta = 1;
         Define<TagThriving>();
 
         Define<TagAnimalView>().name = "Rat";

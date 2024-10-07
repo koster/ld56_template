@@ -7,8 +7,7 @@ public class FudgeDice : DiceBase
     {
         Define<TagTint>().color = Color.yellow;
         Define<TagFudgeDice>().delta = 1;
-        Define<TagFudgeDice>().pos = DiceType.FRONT;
-        Define<TagDescription>().loc = $"{TextStuff.Fudge}: Adds 1 to the {TextStuff.Front} dice!";
+        Define<TagDescription>().loc = $"{TextStuff.Fudge}: Adds 1 to the dice in {TextStuff.Front} of it!";
         Define<TagRarity>().rarity = DiceRarity.COMMON;
         
         Define<TagAnimalView>().name = "Cat";
@@ -17,17 +16,10 @@ public class FudgeDice : DiceBase
     }
 }
 
-public enum DiceType
-{
-    FRONT,
-    LAST
-}
-
 
 public class TagFudgeDice : EntityComponentDefinition
 {
     public int delta;
-    public DiceType pos;
 }
 
 public class FudgeDiceInteraction : BaseInteraction, IOnPlay
@@ -36,7 +28,7 @@ public class FudgeDiceInteraction : BaseInteraction, IOnPlay
     {
         if (dice.model.Is<TagFudgeDice>(out var tfl))
         {
-            var lastDice = G.main.field.ResolvePos(tfl.pos);
+            var lastDice = G.main.field.GetNextDice(dice.view);
             if (lastDice != null)
             {
                 yield return lastDice.SetValue(lastDice.state.rollValue + tfl.delta);

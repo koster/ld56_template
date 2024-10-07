@@ -140,6 +140,8 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
     }
 
     bool isMouseOver;
+    
+    public float Width = 1;
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -147,6 +149,7 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
         if (G.drag_dice != null) return;
         
         isMouseOver = true;
+        Width = 2.5f;
         
         if (scaleRoot)
         {
@@ -183,6 +186,9 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
         if (state.model is BasicDice)
             return 0;
 
+        if (state.model.Is<TagOverrideEnergy>(out var oe))
+            return oe.value;
+            
         var tagRarity = state.model.Get<TagRarity>();
         switch (tagRarity.rarity)
         {
@@ -203,7 +209,8 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
     {
         isMouseOver = false;
         G.hover_dice = null;
-        
+        Width = 1f;
+
         if (scaleRoot)
         {
             scaleRoot.DOKill();

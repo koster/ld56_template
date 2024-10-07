@@ -7,7 +7,7 @@ public class RerollDice : DiceBase
     public RerollDice()
     {
         Define<TagRerollerNext>();
-        Define<TagDescription>().loc = $"{TextStuff.Fudge}: Rerolls the dice in front of it.";
+        Define<TagDescription>().loc = $"{TextStuff.Fudge}: Rerolls the dice in {TextStuff.Front} of it.";
         Define<TagRarity>().rarity = DiceRarity.UNCOMMON;
         
         Define<TagAnimalView>().name = "Frog";

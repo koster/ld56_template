@@ -59,17 +59,47 @@ public class DiceZone : MonoBehaviour
         }
     }
 
+    Vector3 GetTargetPos(int i, List<InteractiveObject> setToWatch)
+    {
+        if (spacing < 1)
+        {
+            float totalOffset = 0f;
+
+            // Calculate total offset by summing half the width of the current object and the previous objects' widths
+            for (int j = 0; j < i; j++)
+            {
+                totalOffset += setToWatch[j].Width;
+            }
+
+            // Offset the current object by half of its own width for proper centering
+            totalOffset += setToWatch[i].Width / 2f;
+
+            // Calculate the current object position centered around the full set
+            float centeredOffset = totalOffset - (GetTotalSetWidth(setToWatch) / 2f);
+    
+            // Return the new target position, taking into account spacing
+            return transform.position + Vector3.right * centeredOffset;
+        }
+        
+        var offset = i * spacing - (setToWatch.Count / 2f - 0.5f) * spacing;
+        var targetPos = transform.position + Vector3.right * offset;
+        return targetPos;
+    }
+
+    float GetTotalSetWidth(List<InteractiveObject> setToWatch)
+    {
+        float totalWidth = 0f;
+        foreach (var obj in setToWatch)
+        {
+            totalWidth += obj.Width;
+        }
+        return totalWidth;
+    }
+
     public bool IsOverlap(InteractiveObject obj)
     {
         capture.center = transform.position;
         return capture.Contains(obj.transform.position);
-    }
-    
-    Vector3 GetTargetPos(int i, List<InteractiveObject> setToWatch)
-    {
-        var offset = i * spacing - (setToWatch.Count / 2f - 0.5f) * spacing;
-        var targetPos = transform.position + Vector3.right * offset;
-        return targetPos;
     }
 
     void OnDrawGizmos()
@@ -110,17 +140,6 @@ public class DiceZone : MonoBehaviour
         if (iof + 1 < objects.Count)
             return objects[iof + 1];
         return null;
-    }
-
-    public InteractiveObject ResolvePos(DiceType unknownPos)
-    {
-        switch (unknownPos)
-        {
-            case DiceType.FRONT: return FrontDice();
-            case DiceType.LAST: return LastDice();
-            default:
-                throw new ArgumentOutOfRangeException(nameof(unknownPos), unknownPos, null);
-        }
     }
 
     public IEnumerator Clear(bool soft = false)

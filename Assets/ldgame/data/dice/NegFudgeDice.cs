@@ -5,8 +5,7 @@ public class NegFudgeDice : DiceBase
     public NegFudgeDice()
     {
         Define<TagFudgeDice>().delta = -1;
-        Define<TagFudgeDice>().pos = DiceType.LAST;
-        Define<TagDescription>().loc = $"{TextStuff.Fudge}: Deducts 1 from the last played dice!";
+        Define<TagDescription>().loc = $"{TextStuff.Fudge}: Deducts 1 from the dice in {TextStuff.Front} of it!";
         Define<TagRarity>().rarity = DiceRarity.COMMON;
         
         Define<TagAnimalView>().name = "Black Cat";

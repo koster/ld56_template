@@ -22,10 +22,13 @@ public class UI : MonoBehaviour
     public RectTransform tutorial_goals;
     public RectTransform tutorial_end_turn;
     public RectTransform tutorial_storage;
+    
+    public GameObject click_to_continue;
 
     void Awake()
     {
         G.ui = this;
+        click_to_continue.SetActive(false);
         tutorial.Hide();
     }
 

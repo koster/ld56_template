@@ -13,9 +13,12 @@ public class Level0 : CMSEntity
     IEnumerator Script()
     {
         G.main.HideHud();
+        G.ui.click_to_continue.SetActive(true);
         
         yield return G.main.Say("A tiny pack of tiny creatures was lost in the woods...");
         yield return G.main.SmartWait(5f);
+        G.ui.click_to_continue.SetActive(false);
+        
         yield return G.main.Say("The food was scarce...");
         yield return G.main.SmartWait(3f);
         yield return G.main.Say("They had to choose who will be left behind...");

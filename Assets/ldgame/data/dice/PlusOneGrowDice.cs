@@ -5,7 +5,7 @@ public class PlusOneGrowDice : DiceBase
 {
     public PlusOneGrowDice()
     {
-        Define<TagDescription>().loc = $"Increases it's value by 1 each turn WHEN it was played. \n (Is not removed on end turn)";
+        Define<TagDescription>().loc = $"Increases it's value by 1 each turn WHEN it was played. \n (Is not removed from board on end turn)";
         Define<TagRarity>().rarity = DiceRarity.RARE;
 
         Define<TagGrowEachTurn>().delta = 1;
