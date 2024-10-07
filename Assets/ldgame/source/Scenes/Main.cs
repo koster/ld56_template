@@ -318,11 +318,13 @@ public class Main : MonoBehaviour
             
             G.ui.tutorial.SetTutorialText("These are the creatures in your HAND.");
             G.ui.tutorial.Show(G.ui.tutorial_hand);
+            G.ui.click_to_continue.SetActive(true);
             
             yield return G.ui.tutorial.WaitForSkip();
             
             G.ui.tutorial.SetTutorialText("Drag them on to the field to play them.", 400);
             G.ui.tutorial.Show(G.ui.tutorial_field);
+            G.ui.click_to_continue.SetActive(false);
             
             yield return G.ui.tutorial.WaitForSkip();
 

@@ -1,4 +1,4 @@
-using UnityEngine;
+using Engine.Math;
 
 public class ThrivingDice : DiceBase
 {
@@ -11,6 +11,6 @@ public class ThrivingDice : DiceBase
 
         Define<TagAnimalView>().name = "Rat";
         Define<TagAnimalView>().sprite = SpriteUtil.Load("animals", "rat");
-        Define<TagAnimalView>().color = Color.white;
+        Define<TagAnimalView>().color = "#91b59f".ParseColor();
     }
 }

@@ -59,7 +59,7 @@ public class TutorialMask : MonoBehaviour
     
     void Update()
     {
-        arrows.anchoredPosition = new Vector2(0, Mathf.Abs(Mathf.Sin(Time.time) * 40f));
+        arrows.anchoredPosition = new Vector2(0, 161+Mathf.Abs(Mathf.Sin(Time.time) * 40f));
         
         if (Input.GetMouseButtonDown(0))
         {
