@@ -18,7 +18,7 @@ public class TutorialMask : MonoBehaviour
         TutorialText.rectTransform.anchoredPosition = new Vector2(0, pos);
     }
     
-    public void Show(RectTransform at)
+    public void Show(RectTransform at = null)
     {
         gameObject.SetActive(true);
         //
@@ -29,12 +29,13 @@ public class TutorialMask : MonoBehaviour
         
         
         // Set the mask size to match the target RectTransform's size
-        var rect = at.rect;
+        var rect = at?.rect ?? new Rect();
+        
         mask.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, rect.width);
         mask.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, rect.height);
 
         // Convert the target RectTransform's world position to screen position
-        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(null, at.position);
+        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(null, at?.position ?? Vector3.zero);
 
         // Convert the screen position to local position relative to the parent canvas
         Vector2 localPoint;
@@ -43,6 +44,8 @@ public class TutorialMask : MonoBehaviour
         // Set the mask's anchored position to the calculated local point
         mask.anchoredPosition = localPoint;
         arrow.anchoredPosition = localPoint;
+        arrow.gameObject.SetActive(at != null);
+        
         G.ui.Punch(arrow);
     }
 

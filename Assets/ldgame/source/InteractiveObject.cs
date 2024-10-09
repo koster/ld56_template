@@ -120,7 +120,7 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
         }
 
         if (sortingGroup != null)
-            sortingGroup.sortingOrder = isMouseOver ? 9999 : order;
+            sortingGroup.sortingOrder = isMouseOver || draggable.isDragging ? 9999 : order;
 
         if (shadow != null)
             shadow?.SetActive((zone?.isShadow ?? false) || state == null);
@@ -225,5 +225,10 @@ public class InteractiveObject : MonoBehaviour, IPointerClickHandler, IPointerEn
         }
         
         G.hud.tooltip.Hide();
+    }
+
+    public bool IsPlayedOrWildcard()
+    {
+        return (state.isPlayed || state.model.Is<TagWildcard>());
     }
 }

@@ -30,7 +30,7 @@ public class DiceHolder : MonoBehaviour
 
     void TryClaim(InteractiveObject arg0)
     {
-        if (IsDiceEntrapped(arg0) && !arg0.state.isClaimed && !isComplete && arg0.state.isPlayed)
+        if (IsDiceEntrapped(arg0) && !arg0.state.isClaimed && !isComplete && arg0.IsPlayedOrWildcard())
         {
             arg0.state.isClaimed = true;
             StartCoroutine(ClaimDiceIntoGoal(arg0));
@@ -76,7 +76,7 @@ public class DiceHolder : MonoBehaviour
         if (!GoalMatcher.Matches(spec, arg0))
             return false;
 
-        if (!arg0.state.isPlayed)
+        if (!arg0.IsPlayedOrWildcard())
             return false;
         
         return true;
@@ -168,7 +168,7 @@ public static class GoalMatcher
     {
         if (obj == null) return false;
         if (obj.state == null) return false;
-        if (!obj.state.isPlayed) return false;
+        if (!obj.IsPlayedOrWildcard()) return false;
         if (obj.state.model.Is<TagWildcard>()) return true;
         
         Debug.Log(goal.type);
@@ -189,7 +189,7 @@ public static class GoalMatcher
             
             case GoalType.ANY: return obj != null;
             
-            case GoalType.SINK: return true;
+            case GoalType.SINK: return obj.state.isPlayed;
             
             default: throw new ArgumentOutOfRangeException();
         }

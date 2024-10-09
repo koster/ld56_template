@@ -158,6 +158,8 @@ public class Main : MonoBehaviour
 
             G.main.showEnergyValue = true;
 
+            yield return TryTutorialExile();
+            
             var allDice = G.run.diceBag.ConvertAll(m => CMS.Get<DiceBase>(m.id)).ToList();
             yield return G.main.SetupPicker(allDice, showAmount: allDice.Count, addToBag: false);
 
@@ -181,6 +183,28 @@ public class Main : MonoBehaviour
             if (G.run.health > G.run.maxHealth) G.run.health = G.run.maxHealth;
 
             yield return G.main.SmartWait(3f);
+        }
+    }
+
+    IEnumerator TryTutorialExile()
+    {
+        if (PlayerPrefs.GetInt("tutorial_sacrifice", 0) == 0)
+        {
+            G.ui.tutorial.Show();
+            G.ui.tutorial.SetTutorialText("A creature you choose will be removed from your deck", 0);
+            G.ui.click_to_continue.gameObject.SetActive(true);
+            yield return G.ui.tutorial.WaitForSkip();
+
+            G.ui.tutorial.Show();
+            G.ui.tutorial.SetTutorialText("The RARER the creature, the more energy you will restore", 0);
+            yield return G.ui.tutorial.WaitForSkip();
+
+            G.ui.tutorial.Show();
+            G.ui.tutorial.SetTutorialText("Rabbits don't restore energy", 0);
+            yield return G.ui.tutorial.WaitForSkip();
+            G.ui.click_to_continue.gameObject.SetActive(false);
+
+            PlayerPrefs.SetInt("tutorial_sacrifice", 1);
         }
     }
 
@@ -327,19 +351,31 @@ public class Main : MonoBehaviour
             
             yield return G.ui.tutorial.WaitForSkip();
 
+            G.main.tutorialDrag.Show(G.main.hand.transform, G.main.field.transform);
             G.main.hand.canDrag = true;
             while (field.objects.Count == 0)
                 yield return new WaitForEndOfFrame();
             G.main.hand.canDrag = false;
+            G.main.tutorialDrag.Hide();
             
             G.ui.tutorial.SetTutorialText("Drag the creature into the CHALLENGE SLOT to play it.", -400);
             G.ui.tutorial.Show(G.ui.tutorial_goals);
             
             yield return G.ui.tutorial.WaitForSkip();
+
+            G.main.tutorialDrag.Show(G.main.field.transform, G.main.challengesActive[0].slots[0].transform);
+            while (G.main.challengesActive[0].slots[0].accumulatedValue == 0)
+                yield return new WaitForEndOfFrame();
+            G.main.tutorialDrag.Hide();
             
-            G.ui.tutorial.SetTutorialText("Hit end turn when you're done.", 0);
+            G.ui.tutorial.SetTutorialText("Hit end turn to get more dice.", 0);
             G.ui.tutorial.Show(G.ui.tutorial_end_turn);
-            
+
+            yield return G.ui.tutorial.WaitForSkip();
+
+            G.ui.tutorial.SetTutorialText("But be careful, your energy runs out!", 0);
+            G.ui.tutorial.Show(G.ui.tutorial_end_turn);
+
             yield return G.ui.tutorial.WaitForSkip();
 
             yield return new WaitForSeconds(0.5f);
@@ -528,6 +564,8 @@ public class Main : MonoBehaviour
     bool isWin;
     bool skip;
     public bool showEnergyValue;
+
+    public DragNDropTutorial tutorialDrag;
 
     void Update()
     {

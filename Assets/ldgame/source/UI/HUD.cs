@@ -28,6 +28,8 @@ public class HUD : MonoBehaviour
     IEnumerator TrackHealth()
     {
         Health.value = G.run.maxHealth / 2;
+        yield return UpdateHP();
+        
         while (true)
         {
             if (Health.value > G.run.health)
